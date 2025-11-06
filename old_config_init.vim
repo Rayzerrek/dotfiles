@@ -1,5 +1,5 @@
 " ========================
-" VIMRC
+" init.vim
 " ========================
 
 " Map leader to space
@@ -27,6 +27,9 @@ Plug 'tomtom/tcomment_vim'
 Plug 'dense-analysis/ale'
 Plug 'wincent/terminus'
 Plug 'sheerun/vim-polyglot'
+Plug 'pacha/vem-tabline'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 call plug#end()
 
 
@@ -50,6 +53,23 @@ let g:airline_theme = 'onedark'
 " Disable the default Vim startup message.
 set shortmess+=I
 
+" Telescope
+lua << EOF
+require('telescope').setup {
+  defaults = {
+    layout_config = { prompt_position = "top" },
+    sorting_strategy = "ascending",
+    file_ignore_patterns = { "node_modules", "%.git/" },
+  }
+}
+EOF
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>   
+nnoremap <leader>fb <cmd>Telescope buffers<cr>     
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fo <cmd>Telescope oldfiles<cr>      
+nnoremap <leader>fc <cmd>Telescope commands<cr>       
+nnoremap <leader>fr <cmd>Telescope registers<cr>
 " Set line numbers and relative numbers.
 set number 
 set relativenumber
@@ -62,6 +82,10 @@ set backspace=indent,eol,start
 " Default split to right and below instad of left and above
 set splitright
 set splitbelow
+
+nnoremap <Leader><Tab> :bnext<CR>
+nnoremap <Leader><S-Tab> :bprev<CR>
+
 
 " copy and paste to CLIPBOARD (+) register
 noremap <Leader>y "+y
@@ -97,11 +121,16 @@ nmap Q <Nop>
 " Do not conceal quotes in JSON files
 let g:vim_json_conceal=0
 let g:indentLine_fileTypeExclude = ['markdown', 'md']
-let g:markdown_fenced_languages = ['python', 'js=javascript', 'ruby']
+let g:markdown_fenced_languages = ['python', 'js=javascript', 'ruby', 'ts=typescript']
 
 " NerdTree
 nnoremap <C-n> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+
+set shell=pwsh
+set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
+set shellquote=\"
+set shellxquote=
 
 " CtrlP
 let g:ctrlp_map = '<c-p>'
