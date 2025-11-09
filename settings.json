@@ -1,0 +1,79 @@
+{
+    "git.openRepositoryInParentFolders": "never",
+    "git.autofetch": true,
+    "editor.fontFamily": "Berkeley Mono Trial Regular",
+    "editor.tabSize": 4,
+    "editor.fontLigatures": true,
+    "amp.tab.disableOnComment": true,
+    "workbench.iconTheme": "bearded-icons",
+    "editor.cursorBlinking": "smooth",
+    "amp.permissions": [
+        {
+            "tool": "Bash",
+            "action": "ask",
+            "matches": {
+                "cmd": [
+                    "*rm*-rf*",
+                    "*rm*-r*--force*",
+                    "*rm*--force*-r*"
+                ]
+            }
+        },
+        {
+            "tool": "Bash",
+            "action": "ask",
+            "matches": {
+                "cmd": [
+                    "*find*-exec*",
+                    "*find*-delete*"
+                ]
+            }
+        },
+        {
+            "tool": "Bash",
+            "action": "ask",
+            "matches": {
+                "cmd": [
+                    "*git*push*--force*",
+                    "*git*push*-f*"
+                ]
+            }
+        },
+        {
+            "tool": "Bash",
+            "action": "ask",
+            "matches": {
+                "cmd": [
+                    "sudo*",
+                    "su*",
+                    "*chmod*777*",
+                    "*chown*root*"
+                ]
+            }
+        },
+        {
+            "tool": "*",
+            "action": "allow",
+            "matches": {}
+        }
+    ],
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "gitlens.ai.model": "gitkraken",
+    "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+    "amp.tab.autoImport.enabled": false,
+    "gitlens.ai.gitkraken.model": "openai:gpt-5-nano",
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "rust": false
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "amp.tab.enabled": false,
+    "workbench.colorTheme": "Gruvbox Dark Hard",
+    "terminal.integrated.fontFamily": "monospace",
+
+}

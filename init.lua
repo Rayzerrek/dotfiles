@@ -19,6 +19,8 @@ vim.opt.rtp:prepend(lazypath)
 -- === Plugins ===
 require("lazy").setup({
   {
+
+  { "dense-analysis/ale" , lazy = false},
     "vague-theme/vague.nvim",
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
     priority = 1000,
@@ -130,7 +132,6 @@ require("lazy").setup({
   { "aluriak/nerdcommenter" },
   { "tomtom/tcomment_vim" },
   { "haya14busa/vim-easymotion" },
-  { "dense-analysis/ale" },
   { "wincent/terminus" },
   { "cespare/vim-toml" },
   { "sheerun/vim-polyglot" },
@@ -138,10 +139,38 @@ require("lazy").setup({
   -- Telescope i zależności
   { "nvim-lua/plenary.nvim" },
   { "nvim-telescope/telescope.nvim" },
+  {
+    "lewis6991/gitsigns.nvim",
+    lazy = false,
+    config = function()
+      require("gitsigns").setup({
+          signs = {
+            add          = { text = " ", texthl = "GitSignsAdd" },
+            change       = { text = " ", texthl = "GitSignsChange" },
+            delete       = { text = " ", texthl = "GitSignsDelete" },
+            topdelete    = { text = " ", texthl = "GitSignsDelete" },
+            changedelete = { text = " ", texthl = "GitSignsChange" },
+          },
+          signcolumn = true,  -- kolumna numerów linii
+          numhl = true,       -- podświetlenie numerów linii zamiast znaków
+          linehl = false,
+          word_diff = false,
+          current_line_blame = false,
+        })
+    end
+  },
 
-  -- CtrlP
-  { "ctrlpvim/ctrlp.vim" },
 })
+
+
+
+
+vim.g.ale_echo_msg_format = 0
+vim.g.ale_lint_on_text_changed = 'never'
+vim.g.ale_lint_on_insert_leave = 0
+vim.g.ale_javascript_tsserver_use_local = 1
+vim.g.ale_javascript_tsserver_use_global = 0
+vim.g.ale_javascript_tsserver_executable = "node_modules/.bin/tsserver.cmd"
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -166,8 +195,12 @@ vim.opt.shell = "pwsh"
 vim.opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
 vim.opt.shellquote = "\""
 vim.opt.shellxquote = ""
+vim.opt.clipboard = "unnamedplus"
 
+vim.g.NERDTreeShowHidden = 1
 vim.cmd("colorscheme vague")
+
+vim.g['airline_section_a'] = ''
 
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
@@ -195,7 +228,7 @@ telescope.setup({
   defaults = {
     layout_config = { prompt_position = "top" },
     sorting_strategy = "ascending",
-    file_ignore_patterns = { "node_modules", "%.git/" },
+    file_ignore_patterns = { "node_modules", "%.git", "target" },
   },
 })
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts)
