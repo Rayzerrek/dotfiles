@@ -76,6 +76,6 @@
     "vim.visualModeKeyBindings": [],
     "geminicodeassist.inlineSuggestions.enableAuto": false,
     "diffEditor.codeLens": true,
-    "workbench.iconTheme": "vscode-icons",
+    "workbench.iconTheme": "vscode-icons"
 
 }
