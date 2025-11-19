@@ -1,79 +1,81 @@
 {
     "git.openRepositoryInParentFolders": "never",
     "git.autofetch": true,
-    "editor.fontFamily": "Berkeley Mono Trial Regular",
+    "editor.fontFamily": "Fira Code",
     "editor.tabSize": 4,
     "editor.fontLigatures": true,
-    "amp.tab.disableOnComment": true,
-    "workbench.iconTheme": "bearded-icons",
     "editor.cursorBlinking": "smooth",
-    "amp.permissions": [
-        {
-            "tool": "Bash",
-            "action": "ask",
-            "matches": {
-                "cmd": [
-                    "*rm*-rf*",
-                    "*rm*-r*--force*",
-                    "*rm*--force*-r*"
-                ]
-            }
-        },
-        {
-            "tool": "Bash",
-            "action": "ask",
-            "matches": {
-                "cmd": [
-                    "*find*-exec*",
-                    "*find*-delete*"
-                ]
-            }
-        },
-        {
-            "tool": "Bash",
-            "action": "ask",
-            "matches": {
-                "cmd": [
-                    "*git*push*--force*",
-                    "*git*push*-f*"
-                ]
-            }
-        },
-        {
-            "tool": "Bash",
-            "action": "ask",
-            "matches": {
-                "cmd": [
-                    "sudo*",
-                    "su*",
-                    "*chmod*777*",
-                    "*chown*root*"
-                ]
-            }
-        },
-        {
-            "tool": "*",
-            "action": "allow",
-            "matches": {}
-        }
-    ],
     "github.copilot.nextEditSuggestions.enabled": true,
     "gitlens.ai.model": "gitkraken",
     "gitlens.ai.vscode.model": "copilot:gpt-4.1",
-    "amp.tab.autoImport.enabled": false,
     "gitlens.ai.gitkraken.model": "openai:gpt-5-nano",
     "github.copilot.enable": {
         "*": true,
         "plaintext": false,
         "markdown": false,
         "scminput": false,
-        "rust": false
+        "rust": true,
+        "typescript": true,
+        "python": true
     },
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "amp.tab.enabled": false,
     "workbench.colorTheme": "Gruvbox Dark Hard",
-    "terminal.integrated.fontFamily": "monospace",
+    "geminicodeassist.project": "axiomatic-axis-q7jnj",
+
+    "vim.leader": " ",
+    "vim.useSystemClipboard": true,
+    "vim.hlsearch": true,
+    "vim.incsearch": true,
+    "vim.smartcase": true,
+    "vim.ignorecase": true,
+    "vim.cursorStylePerMode.insert": "line",
+    "vim.cursorStylePerMode.normal": "block",
+    "vim.cursorStylePerMode.visual": "block",
+    "vim.easymotion": true,
+    "vim.sneak": true,
+    "vim.handleKeys": {
+        "<C-a>": false,
+        "<C-f>": false,
+        "<C-h>": false,
+        "<C-j>": false,
+        "<C-k>": false,
+        "<C-l>": false,
+        "<C-n>": false
+    },
+
+    "vim.normalModeKeyBindingsNonRecursive": [
+        { "before": ["<leader>", "y"], "commands": ["editor.action.clipboardCopyAction"]},       
+        { "before": ["<leader>", "p"], "commands": ["editor.action.clipboardPasteAction"]},
+        { "before": ["<leader>", "f", "f"], "commands": [ "workbench.action.quickOpen" ] },
+        { "before": ["<leader>", "f", "g"], "commands": [ "workbench.action.findInFiles" ] },
+        { "before": ["<leader>", "f", "b"], "commands": [ "workbench.action.showAllEditors" ] },
+        { "before": ["<leader>", "f", "h"], "commands": [ "workbench.action.openDocumentationUrl" ] },
+        { "before": ["<leader>", "f", "o"], "commands": [ "workbench.action.openRecent" ] },
+        { "before": ["<leader>", "f", "c"], "commands": [ "workbench.action.showCommands" ] },
+        { "before": ["<leader>", "f", "r"], "commands": [ "workbench.action.openRecent" ] },
+        { "before": ["<leader>", "<Tab>"], "commands": [ "workbench.action.nextEditor" ] },
+        { "before": ["<leader>", "S-<Tab>"], "commands": [ "workbench.action.previousEditor" ] },
+        { "before": ["<C-j>"], "commands": [ "workbench.action.focusBelowGroup" ] },
+        { "before": ["<C-k>"], "commands": [ "workbench.action.focusAboveGroup" ] },
+        { "before": ["<C-h>"], "commands": [ "workbench.action.focusLeftGroup" ] },
+        { "before": ["<C-l>"], "commands": [ "workbench.action.focusRightGroup" ] },
+        { "before": ["<C-n>"], "commands": [ "workbench.view.explorer" ] },
+        { "before": ["S"], "after": [":", "%", "s", "/", "/", "g", "<Left>", "<Left>"] },
+        { "before": ["Q"], "after": [] } // disables Ex mode
+    ],
+
+    "vim.insertModeKeyBindingsNonRecursive": [
+        { "before": ["<C-e>"], "commands": [ "editor.emmet.action.expandAbbreviation" ] }
+    ],
+
+    "vim.visualModeKeyBindingsNonRecursive": [],
+    "vim.insertModeKeyBindings": [],
+    "vim.normalModeKeyBindings": [],
+    "vim.visualModeKeyBindings": [],
+    "geminicodeassist.inlineSuggestions.enableAuto": false,
+    "diffEditor.codeLens": true,
+    "workbench.iconTheme": "vscode-icons",
 
 }
