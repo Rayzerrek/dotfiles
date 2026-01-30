@@ -1,0 +1,83 @@
+{
+	"diagnostics": {
+		"inline": {
+			"enabled": true
+		}
+	},
+	"wrap_guides": [80],
+	"buffer_line_height": {
+		"custom": 1.3
+	},
+	"toolbar": {
+		"breadcrumbs": false,
+		"quick_actions": false
+	},
+	"indent_guides": {
+		"enabled": true
+	},
+	"terminal": {
+		"working_directory": "current_project_directory",
+		"font_size": 13.0,
+		"shell": {
+			"with_arguments": {
+				"title_override": "ZSH",
+				"program": "C:\\msys64\\usr\\bin\\env.exe",
+				"args": [
+					"CHERE_INVOKING=1",
+					"MSYSTEM=MINGW64",
+					"MSYS2_PATH_TYPE=inherit",
+					"/usr/bin/zsh",
+					"-l"
+				]
+			}
+		}
+	},
+	"agent": {
+		"default_profile": "ask",
+		"default_model": {
+			"provider": "copilot_chat",
+			"model": "claude-opus-4.5"
+		},
+		"favorite_models": [],
+		"model_parameters": []
+	},
+	"icon_theme": "Zed (Default)",
+	"vim_mode": true,
+	"ui_font_size": 14,
+	"buffer_font_size": 13,
+	"theme": {
+		"mode": "dark",
+		"light": "Gruvbox Light",
+		"dark": "Gruvbox Dark Hard"
+	},
+	"inlay_hints": {
+		"enabled": true
+	},
+	"formatter": "prettier",
+	"languages": {
+		"JavaScript": {
+			"formatter": { "language_server": { "name": "biome" } }
+		},
+		"TypeScript": {
+			"formatter": { "language_server": { "name": "biome" } }
+		},
+		"TSX": {
+			"formatter": {
+				"language_server": { "name": "biome" }
+			}
+		},
+		"JSON": {
+			"formatter": { "language_server": { "name": "biome" } }
+		},
+		"JSONC": {
+			"formatter": { "language_server": { "name": "biome" } }
+		}
+	},
+	"format_on_save": "on",
+	"code_actions_on_format": {
+		"source.fixAll.biome": true,
+		"source.organizeImports.biome": true,
+		"semicolons": false,
+		"formatter.formatWithErrors": true
+	}
+}
