@@ -1,0 +1,18 @@
+{
+    "editor.fontFamily": "Maple Mono NF CN",
+    "editor.formatOnSave": true,
+    "editor.fontSize": 13,
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+    "json.schemaDownload.trustedDomains": {
+        "https://opencode.ai/config.json": true
+    },
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "github.copilot.nextEditSuggestions.enabled": false
+}
