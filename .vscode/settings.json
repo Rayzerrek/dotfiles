@@ -1,0 +1,15 @@
+{
+  "workbench.sideBar.location": "right",
+  "terminal.integrated.fontFamily": "Cascadia Code NF",
+  "editor.fontFamily": "Cascadia Code NF",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "[typescript][typescriptreact][json][jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "js/ts.experimental.useTsgo": true,
+  "js/ts.updateImportsOnFileMove.enabled": "always",
+  "remote.autoForwardPortsSource": "hybrid",
+  "workbench.colorTheme": "Nord Flat",
+  "svelte.enable-ts-plugin": true,
+}

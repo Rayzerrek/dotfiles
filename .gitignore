@@ -1,0 +1,16 @@
+# Odblokuj .vscode z globalnego gitignore
+!.vscode/
+
+# Ignoruj pliki tymczasowe i cache VS Code
+.vscode/History/
+.vscode/globalStorage/
+.vscode/workspaceStorage/
+.vscode/CachedData/
+.vscode/Backups/
+.vscode/profiles/**/globalStorage/
+*.vscdb
+*.vscdb.backup
+
+# Ignoruj ewentualne pliki tymczasowe Neovima
+nvim/.netrwhist
+nvim/lazy-lock.json.bak

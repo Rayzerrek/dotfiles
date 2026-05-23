@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "3ash.nord-flat",
+    "esbenp.prettier-vscode",
+    "ms-vscode-remote.remote-wsl",
+    "oxc.oxc-vscode",
+    "svelte.svelte-vscode",
+    "typescriptteam.native-preview"
+  ]
+}
