@@ -1,7 +1,7 @@
 {
   "workbench.sideBar.location": "right",
   "terminal.integrated.fontFamily": "Cascadia Code NF",
-  "editor.fontFamily": "JetBrains Mono",
+  "editor.fontFamily": "Cascadia Code NF",
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file",
   "[typescript][typescriptreact][json][jsonc]": {
