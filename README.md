@@ -23,3 +23,5 @@ mklink /J C:\Users\kacpe\AppData\Local\nvim C:\Users\kacpe\dotfiles\nvim
 :: Zlinkuj VS Code
 mklink /J C:\Users\kacpe\AppData\Roaming\Code\User C:\Users\kacpe\dotfiles\.vscode
 ```
+
+<!-- Test dot update command -->
