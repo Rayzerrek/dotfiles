@@ -8,21 +8,35 @@ vim.g.mapleader = " "
 -- Native Plugin Manager (vim.pack) -- Neovim 0.12+
 -- ============================================================================
 
-vim.pack.add({
-	{ src = "https://github.com/hrsh7th/nvim-cmp" },
-	{ src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
-	{ src = "https://github.com/hrsh7th/cmp-buffer" },
-	{ src = "https://github.com/hrsh7th/cmp-path" },
-	{ src = "https://github.com/datsfilipe/vesper.nvim" },
-	{ src = "https://github.com/nvim-lua/plenary.nvim" },
-	{ src = "https://github.com/pmizio/typescript-tools.nvim" },
-})
+local plugins = {
+	"plugins.vesper",
+	"plugins.cmp",
+	"plugins.typescript_tools",
+	"plugins.oil",
+	"plugins.lualine",
+}
+
+local specs = {}
+for _, plugin in ipairs(plugins) do
+	local p = require(plugin)
+	if p.spec then
+		if p.spec.src then
+			table.insert(specs, p.spec)
+		else
+			for _, sub_spec in ipairs(p.spec) do
+				table.insert(specs, sub_spec)
+			end
+		end
+	end
+end
+
+vim.pack.add(specs)
 
 -- ============================================================================
 -- Colorscheme
 -- ============================================================================
 
-vim.cmd.colorscheme("vesper")
+require("plugins.vesper").config()
 
 -- ============================================================================
 -- Options & Indentation (Neovim Native Options)
@@ -35,6 +49,9 @@ vim.opt.expandtab = true
 
 -- Używaj systemowego schowka (yank/paste współpracuje z systemem)
 vim.opt.clipboard = "unnamedplus"
+
+-- Ukryj natywny wskaźnik trybu (-- INSERT --), ponieważ lualine go dubluje
+vim.opt.showmode = false
 
 -- Ustawienie PowerShell (pwsh) jako domyślnej powłoki (shell) na Windowsie
 local powershell_options = {
@@ -89,21 +106,7 @@ vim.diagnostic.config({
 
 -- TypeScript Tools (highly optimized alternative to vtsls)
 -- Uses pmizio/typescript-tools.nvim under the hood
-require("typescript-tools").setup({
-	capabilities = require("cmp_nvim_lsp").default_capabilities(),
-	settings = {
-		expose_as_code_action = "all", -- Exposes commands like Organize Imports, Add Missing Imports, etc.
-		tsserver_file_preferences = {
-			includeInlayParameterNameHints = "all",
-			includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-			includeInlayFunctionParameterTypeHints = true,
-			includeInlayVariableTypeHints = true,
-			includeInlayPropertyDeclarationTypeHints = true,
-			includeInlayFunctionLikeReturnTypeHints = true,
-			includeInlayEnumMemberValueHints = true,
-		},
-	},
-})
+require("plugins.typescript_tools").config()
 
 -- Alternative: typescript-language-server (if vtsls is not available)
 -- Uncomment this and comment out vtsls above if you prefer tsserver
@@ -186,24 +189,7 @@ vim.lsp.enable({
 -- Autocompletion (nvim-cmp)
 -- ============================================================================
 
-local cmp = require("cmp")
-
-cmp.setup({
-	sources = {
-		{ name = "nvim_lsp" },
-		{ name = "buffer" },
-		{ name = "path" },
-	},
-	mapping = cmp.mapping.preset.insert({
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<CR>"] = cmp.mapping.confirm({ select = true }),
-		["<Tab>"] = cmp.mapping.select_next_item(),
-		["<S-Tab>"] = cmp.mapping.select_prev_item(),
-		["<C-e>"] = cmp.mapping.abort(),
-		["<C-b>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-	}),
-})
+require("plugins.cmp").config()
 
 -- ============================================================================
 -- Keymaps
@@ -277,6 +263,12 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 -- ============================================================================
+-- File Explorer (oil.nvim)
+-- ============================================================================
+
+require("plugins.oil").config()
+
+-- ============================================================================
 -- Terminal Toggle & Resize (Ctrl + ` and Ctrl + Arrows)
 -- ============================================================================
 
@@ -319,3 +311,9 @@ vim.keymap.set("n", "<C-Up>", ":resize +2<CR>", { silent = true, desc = "Increas
 vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { silent = true, desc = "Decrease window height" })
 vim.keymap.set("t", "<C-Up>", "<C-\\><C-n>:resize +2<CR>i", { silent = true, desc = "Increase window height" })
 vim.keymap.set("t", "<C-Down>", "<C-\\><C-n>:resize -2<CR>i", { silent = true, desc = "Decrease window height" })
+
+-- ============================================================================
+-- Statusline (lualine.nvim)
+-- ============================================================================
+
+require("plugins.lualine").config()
