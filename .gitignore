@@ -14,3 +14,27 @@
 # Ignoruj ewentualne pliki tymczasowe Neovima
 nvim/.netrwhist
 nvim/lazy-lock.json.bak
+
+# Ignoruj sesje, logi i ustawienia agentow AI
+.agents/
+.antigravitycli/
+.kiro/
+
+# Pi: trzymaj w dotfiles tylko konfiguracje kodowania, instrukcje i skillsy.
+.pi/*
+!.pi/agent/
+.pi/agent/*
+!.pi/agent/.skill-lock.json
+!.pi/agent/AGENTS.md
+!.pi/agent/mcp.json
+!.pi/agent/settings.json
+!.pi/agent/skills/
+!.pi/agent/skills/**
+.pi/agent/auth.json
+.pi/agent/mcp-cache.json
+.pi/agent/bin/
+.pi/agent/extensions/
+.pi/agent/npm/node_modules/
+.pi/agent/sessions/
+*Zone.Identifier
+

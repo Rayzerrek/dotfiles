@@ -1,0 +1,16 @@
+{
+  "defaultModel": "gpt-5.5",
+  "defaultProvider": "openai-codex",
+  "defaultThinkingLevel": "high",
+  "lastChangelogVersion": "0.78.0",
+  "packages": [
+    "npm:pi-web-access",
+    "npm:pi-mcp-adapter",
+    {
+      "source": "npm:@plannotator/pi-extension",
+      "skills": []
+    }
+  ],
+  "theme": "dark",
+  "enableSkillCommands": true
+}
