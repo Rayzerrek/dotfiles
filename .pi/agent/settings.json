@@ -2,7 +2,7 @@
   "defaultModel": "gpt-5.5",
   "defaultProvider": "openai-codex",
   "defaultThinkingLevel": "high",
-  "lastChangelogVersion": "0.78.0",
+  "lastChangelogVersion": "0.78.1",
   "packages": [
     "npm:pi-web-access",
     "npm:pi-mcp-adapter",

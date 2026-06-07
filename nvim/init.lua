@@ -152,6 +152,9 @@ vim.lsp.config["oxlint"] = {
 		"typescriptreact",
 	},
 	root_markers = { "package.json", "tsconfig.json", ".git", ".oxlintrc.json" },
+	settings = {
+		run = "onSave",
+	},
 }
 
 -- oxfmt for TypeScript / JavaScript (fast formatting)
@@ -244,15 +247,28 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- Auto-format on save (Neovim Native LSP)
 -- ============================================================================
 
+local function oxlint_fix_all(bufnr)
+	local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "oxlint" })
+	for _, client in ipairs(clients) do
+		client:request_sync("workspace/executeCommand", {
+			command = "oxc.fixAll",
+			arguments = { { uri = vim.uri_from_bufnr(bufnr) } },
+		}, 1000, bufnr)
+	end
+end
+
 vim.api.nvim_create_autocmd("BufWritePre", {
 	group = vim.api.nvim_create_augroup("LspFormatOnSave", {}),
 	pattern = { "*.py", "*.js", "*.ts", "*.jsx", "*.tsx" },
 	callback = function(ev)
 		local ft = vim.bo[ev.buf].filetype
-		local formatter = "ruff"
-		if ft == "javascript" or ft == "typescript" or ft == "javascriptreact" or ft == "typescriptreact" then
-			formatter = "oxfmt"
+		local is_javascript = ft == "javascript" or ft == "typescript" or ft == "javascriptreact" or ft == "typescriptreact"
+		local formatter = is_javascript and "oxfmt" or "ruff"
+
+		if is_javascript then
+			oxlint_fix_all(ev.buf)
 		end
+
 		vim.lsp.buf.format({
 			async = false,
 			filter = function(client)
