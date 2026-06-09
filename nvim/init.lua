@@ -205,10 +205,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local opts = { buffer = ev.buf, silent = true }
 		local map = vim.keymap.set
 
-		-- Włączenie inlay hints (podpowiedzi typów w locie) jeśli serwer je obsługuje
+		-- Inlay hints są domyślnie wyłączone; <leader>th przełącza je per bufor.
 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
 		if client and client:supports_method("textDocument/inlayHint") then
-			vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+			vim.lsp.inlay_hint.enable(false, { bufnr = ev.buf })
 			-- Skrót <leader>th do przełączania widoczności podpowiedzi w locie
 			map("n", "<leader>th", function()
 				vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf }), { bufnr = ev.buf })
