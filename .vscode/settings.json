@@ -1,13 +1,12 @@
 {
-  "workbench.sideBar.location": "right",
   "terminal.integrated.fontFamily": "Cascadia Code NF",
   "editor.fontFamily": "Cascadia Code NF",
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file",
-  "[typescript][typescriptreact][json][jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "js/ts.experimental.useTsgo": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
   "js/ts.updateImportsOnFileMove.enabled": "always",
   "remote.autoForwardPortsSource": "hybrid",
   "workbench.colorTheme": "Nord Flat",
@@ -20,10 +19,10 @@
     "https://raw.githubusercontent.com/microsoft/vscode/": true,
     "https://schemastore.azurewebsites.net/": true,
     "https://ui.shadcn.com": true,
-    "https://www.schemastore.org/": true
+    "https://www.schemastore.org/": true,
   },
   "terminal.integrated.commandsToSkipShell": [
     "kilo-code.new.agentManagerOpen",
-    "kilo-code.new.agentManager.showTerminal"
-  ]
+    "kilo-code.new.agentManager.showTerminal",
+  ],
 }
