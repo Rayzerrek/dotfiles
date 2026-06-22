@@ -4,8 +4,8 @@
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file",
   "js/ts.experimental.useTsgo": true,
-  "[typescript]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
+  "[typescript][jsonc][json]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
   },
   "js/ts.updateImportsOnFileMove.enabled": "always",
   "remote.autoForwardPortsSource": "hybrid",
@@ -25,4 +25,27 @@
     "kilo-code.new.agentManagerOpen",
     "kilo-code.new.agentManager.showTerminal",
   ],
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell",
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe",
+      ],
+      "args": [],
+      "icon": "terminal-cmd",
+    },
+    "Git Bash": {
+      "source": "Git Bash",
+      "icon": "terminal-git-bash",
+    },
+    "Nushell": {
+      "path": "C:\\Users\\kacpe\\scoop\\apps\\nu\\current\\nu.exe",
+      "args": [],
+    },
+  },
+  "terminal.integrated.defaultProfile.windows": "Nushell",
 }

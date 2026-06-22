@@ -109,6 +109,60 @@
       "skillFolderHash": "743fba3540a3593f15d548935f08f74788e76d3d",
       "installedAt": "2026-05-29T14:59:04.109Z",
       "updatedAt": "2026-05-29T14:59:04.109Z"
+    },
+    "unity-scriptableobject": {
+      "source": "besty0728/unity-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
+      "skillPath": "SkillsForUnity/unity-skills~/skills/scriptableobject/SKILL.md",
+      "skillFolderHash": "331ca2ebb65d6279520abbbe1297d568fdf79aa0",
+      "installedAt": "2026-06-20T23:31:40.707Z",
+      "updatedAt": "2026-06-20T23:31:40.707Z"
+    },
+    "unity-shader": {
+      "source": "besty0728/unity-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
+      "skillPath": "SkillsForUnity/unity-skills~/skills/shader/SKILL.md",
+      "skillFolderHash": "27e5e273540712aadf500c17384ef9cdd653e67d",
+      "installedAt": "2026-06-20T23:31:41.695Z",
+      "updatedAt": "2026-06-20T23:31:41.695Z"
+    },
+    "unity-ui": {
+      "source": "besty0728/unity-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
+      "skillPath": "SkillsForUnity/unity-skills~/skills/ui/SKILL.md",
+      "skillFolderHash": "4b16cbcfdaaeaadc35219513b7f5a1341f7c8730",
+      "installedAt": "2026-06-20T23:31:45.732Z",
+      "updatedAt": "2026-06-20T23:31:45.732Z"
+    },
+    "unity-skills": {
+      "source": "besty0728/unity-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
+      "skillPath": "SkillsForUnity/unity-skills~/SKILL.md",
+      "skillFolderHash": "72a2192efba2291ef29ed474451ee47b07444a2b",
+      "installedAt": "2026-06-20T23:31:47.131Z",
+      "updatedAt": "2026-06-20T23:31:47.131Z"
+    },
+    "unity-editor": {
+      "source": "besty0728/unity-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
+      "skillPath": "SkillsForUnity/unity-skills~/skills/editor/SKILL.md",
+      "skillFolderHash": "c67ed26c5788d9e583dad3bff4bff412f7ee7b81",
+      "installedAt": "2026-06-20T23:31:50.443Z",
+      "updatedAt": "2026-06-20T23:31:50.443Z"
+    },
+    "unity-uitoolkit": {
+      "source": "besty0728/unity-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
+      "skillPath": "SkillsForUnity/unity-skills~/skills/uitoolkit/SKILL.md",
+      "skillFolderHash": "23ae8933f53db502271342662745aea7f414ac99",
+      "installedAt": "2026-06-20T23:31:52.676Z",
+      "updatedAt": "2026-06-20T23:31:52.676Z"
     }
   },
   "dismissed": {
