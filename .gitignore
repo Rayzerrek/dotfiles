@@ -38,3 +38,9 @@ nvim/lazy-lock.json.bak
 .pi/agent/sessions/
 *Zone.Identifier
 
+# Herdr: track stable config, ignore runtime state.
+herdr/*.log
+herdr/*.sock
+herdr/session.json
+herdr/release-notes.json
+
