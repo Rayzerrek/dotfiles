@@ -1,8 +1,8 @@
 {
-  "defaultModel": "gpt-5.5",
-  "defaultProvider": "openai-codex",
+  "defaultModel": "kimi-k2.6",
+  "defaultProvider": "opencode-go",
   "defaultThinkingLevel": "high",
-  "lastChangelogVersion": "0.80.2",
+  "lastChangelogVersion": "0.80.3",
   "packages": [
     "npm:pi-web-access",
     "npm:pi-mcp-adapter",
@@ -12,5 +12,8 @@
     }
   ],
   "theme": "dark",
-  "enableSkillCommands": true
+  "enableSkillCommands": true,
+  "compaction": {
+    "enabled": true
+  }
 }
