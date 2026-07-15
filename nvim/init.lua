@@ -54,8 +54,21 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.showmode = false
 
 -- Ustawienie PowerShell (pwsh) jako domyślnej powłoki (shell) na Windowsie
+local function get_powershell_shell()
+	local localappdata = vim.env.LOCALAPPDATA or "C:\\Users\\kacpe\\AppData\\Local"
+	local target_dir = localappdata .. "\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe"
+	local old_path = vim.env.PATH
+	vim.env.PATH = target_dir .. ";" .. old_path
+	local resolved = vim.fn.exepath("pwsh")
+	vim.env.PATH = old_path
+	if resolved ~= "" then
+		return '"' .. resolved .. '"'
+	end
+	return "powershell"
+end
+
 local powershell_options = {
-	shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell",
+	shell = get_powershell_shell(),
 	shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy Bypass -Command [Console]::InputEncoding=[System.Text.Encoding]::UTF8;[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;$Input|Out-String|Invoke-Expression",
 	shellredir = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
 	shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
@@ -133,7 +146,7 @@ vim.lsp.config["ty"] = {
 }
 
 -- Ruff Language Server for Python (Astral Formatter/Linter)
--- Requires: ruff installed globally or via pip: pip install ruff
+-- Requires: ruff installed globally or via uv: uv tool install ruff
 vim.lsp.config["ruff"] = {
 	cmd = { "ruff", "server" },
 	filetypes = { "python" },

@@ -2,7 +2,7 @@
   "defaultModel": "kimi-k2.6",
   "defaultProvider": "opencode-go",
   "defaultThinkingLevel": "high",
-  "lastChangelogVersion": "0.80.3",
+  "lastChangelogVersion": "0.80.6",
   "packages": [
     "npm:pi-web-access",
     "npm:pi-mcp-adapter",
@@ -15,5 +15,6 @@
   "enableSkillCommands": true,
   "compaction": {
     "enabled": true
-  }
+  },
+  "hideThinkingBlock": true
 }
