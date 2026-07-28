@@ -6,26 +6,26 @@ Managed Apache Iceberg REST catalog built into R2 buckets. No catalog servers to
 
 This reference is a fast-start with verified connection details and code. For limits, maintenance settings, engine config examples, and pricing, **retrieve the live docs** — use the `cloudflare-docs` MCP/search tool if available, otherwise `webfetch` the URL. Docs are source of truth over this file.
 
-| Topic | URL |
-|-------|-----|
-| Overview / get started | `https://developers.cloudflare.com/r2/data-catalog/get-started/` |
-| Manage catalogs (enable, tokens) | `https://developers.cloudflare.com/r2/data-catalog/manage-catalogs/` |
-| Engine config examples | `https://developers.cloudflare.com/r2/data-catalog/config-examples/` (`pyiceberg/`, `spark-python/`, `spark-scala/`, `duckdb/`, `snowflake/`, `trino/`, `starrocks/`) |
-| Table maintenance (compaction, snapshots) | `https://developers.cloudflare.com/r2/data-catalog/table-maintenance/` |
-| Deleting data | `https://developers.cloudflare.com/r2/data-catalog/deleting-data/` |
-| Metrics (GraphQL) | `https://developers.cloudflare.com/r2/data-catalog/observability/metrics/` |
-| Pricing | `https://developers.cloudflare.com/r2/data-catalog/platform/pricing/` |
-| Iceberg spec | `https://iceberg.apache.org/spec/` |
+| Topic                                     | URL                                                                                                                                                                   |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Overview / get started                    | `https://developers.cloudflare.com/r2/data-catalog/get-started/`                                                                                                      |
+| Manage catalogs (enable, tokens)          | `https://developers.cloudflare.com/r2/data-catalog/manage-catalogs/`                                                                                                  |
+| Engine config examples                    | `https://developers.cloudflare.com/r2/data-catalog/config-examples/` (`pyiceberg/`, `spark-python/`, `spark-scala/`, `duckdb/`, `snowflake/`, `trino/`, `starrocks/`) |
+| Table maintenance (compaction, snapshots) | `https://developers.cloudflare.com/r2/data-catalog/table-maintenance/`                                                                                                |
+| Deleting data                             | `https://developers.cloudflare.com/r2/data-catalog/deleting-data/`                                                                                                    |
+| Metrics (GraphQL)                         | `https://developers.cloudflare.com/r2/data-catalog/observability/metrics/`                                                                                            |
+| Pricing                                   | `https://developers.cloudflare.com/r2/data-catalog/platform/pricing/`                                                                                                 |
+| Iceberg spec                              | `https://iceberg.apache.org/spec/`                                                                                                                                    |
 
 ## Connection Values
 
 Use the exact **Catalog URI** and **Warehouse** printed by `npx wrangler r2 bucket catalog enable <bucket>` (also shown in the dashboard). They follow these formats:
 
-| Value | Format | Example |
-|-------|--------|---------|
+| Value       | Format                                                        | Example                                                     |
+| ----------- | ------------------------------------------------------------- | ----------------------------------------------------------- |
 | Catalog URI | `https://catalog.cloudflarestorage.com/{ACCOUNT_ID}/{BUCKET}` | `https://catalog.cloudflarestorage.com/4482a1.../live-data` |
-| Warehouse | `{ACCOUNT_ID}_{BUCKET}` (hyphens preserved) | `4482a1..._live-data` |
-| Token | R2 API token (Admin R&W on Storage + R&W on Data Catalog) | `cfut_...` |
+| Warehouse   | `{ACCOUNT_ID}_{BUCKET}` (hyphens preserved)                   | `4482a1..._live-data`                                       |
+| Token       | R2 API token (Admin R&W on Storage + R&W on Data Catalog)     | `cfut_...`                                                  |
 
 The Iceberg `/config` route needs `?warehouse={WAREHOUSE}`.
 
@@ -54,9 +54,9 @@ R2 Bucket  ── Parquet data files + Iceberg metadata
 
 ## Two APIs — Don't Confuse Them
 
-| API | Base | Use for |
-|-----|------|---------|
-| **Iceberg REST catalog** | `https://catalog.cloudflarestorage.com/{ACCOUNT_ID}/{BUCKET}` | Table reads/writes via PyIceberg, PySpark, Trino, etc. |
+| API                        | Base                                                                             | Use for                                                               |
+| -------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| **Iceberg REST catalog**   | `https://catalog.cloudflarestorage.com/{ACCOUNT_ID}/{BUCKET}`                    | Table reads/writes via PyIceberg, PySpark, Trino, etc.                |
 | **Control-plane REST API** | `https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/r2-catalog/{BUCKET}` | Enable/disable, maintenance config, list namespaces/tables, get-table |
 
 **Status:** Open beta. Available to all R2 subscribers; verify pricing/billing status in docs.

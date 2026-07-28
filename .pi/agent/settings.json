@@ -1,20 +1,56 @@
 {
-  "defaultModel": "kimi-k2.6",
+  "defaultModel": "minimax-m3",
   "defaultProvider": "opencode-go",
-  "defaultThinkingLevel": "high",
-  "lastChangelogVersion": "0.80.6",
+  "defaultThinkingLevel": "medium",
+  "lastChangelogVersion": "0.82.1",
   "packages": [
     "npm:pi-web-access",
-    "npm:pi-mcp-adapter",
     {
       "source": "npm:@plannotator/pi-extension",
       "skills": []
-    }
+    },
+    "npm:pi-commandcode-provider"
   ],
-  "theme": "dark",
+  "theme": "vesper",
   "enableSkillCommands": true,
   "compaction": {
     "enabled": true
   },
-  "hideThinkingBlock": true
+  "hideThinkingBlock": true,
+  "enabledModels": [
+    "openai-codex/gpt-5.5",
+    "openai-codex/gpt-5.6-luna",
+    "openai-codex/gpt-5.6-sol",
+    "openai-codex/gpt-5.6-terra",
+    "commandcode/deepseek/deepseek-v4-pro",
+    "commandcode/deepseek/deepseek-v4-flash",
+    "commandcode/moonshotai/Kimi-K3",
+    "commandcode/gpt-5.4-mini",
+    "commandcode/gpt-5.3-codex",
+    "commandcode/gpt-5.4",
+    "commandcode/gpt-5.5",
+    "commandcode/gpt-5.6-luna",
+    "commandcode/gpt-5.6-terra",
+    "commandcode/gpt-5.6-sol",
+    "commandcode/claude-haiku-4-5-20251001",
+    "commandcode/claude-opus-4-7",
+    "commandcode/claude-opus-4-8",
+    "commandcode/claude-fable-5",
+    "commandcode/claude-sonnet-4-6",
+    "commandcode/claude-sonnet-5",
+    "commandcode/moonshotai/Kimi-K2.7-Code",
+    "commandcode/moonshotai/Kimi-K2.7-Code-Highspeed",
+    "commandcode/moonshotai/Kimi-K2.6",
+    "commandcode/moonshotai/Kimi-K2.5",
+    "commandcode/zai-org/GLM-5.2",
+    "commandcode/zai-org/GLM-5.2-Fast",
+    "commandcode/MiniMaxAI/MiniMax-M3",
+    "commandcode/xiaomi/mimo-v2.5-pro",
+    "commandcode/tencent/hy3-paid",
+    "commandcode/stepfun/Step-3.5-Flash",
+    "commandcode/stepfun/Step-3.7-Flash",
+    "commandcode/nvidia/nemotron-3-ultra-550b-a55b",
+    "commandcode/poolside/laguna-s-2.1-free",
+    "commandcode/inclusionai/ling-3.0-flash-free"
+  ]
 }

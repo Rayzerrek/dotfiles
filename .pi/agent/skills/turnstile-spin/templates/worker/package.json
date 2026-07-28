@@ -1,9 +1,22 @@
 {
   "name": "turnstile-siteverify",
   "version": "1.0.0",
-  "description": "Managed siteverify Worker template for Turnstile Spin. Deploys via the Spin agent skill or directly via wrangler.",
-  "license": "MIT",
   "private": false,
+  "description": "Managed siteverify Worker template for Turnstile Spin. Deploys via the Spin agent skill or directly via wrangler.",
+  "keywords": [
+    "bot-protection",
+    "captcha",
+    "cloudflare",
+    "siteverify",
+    "turnstile",
+    "workers"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudflare/skills",
+    "directory": "skills/turnstile-spin/templates/worker"
+  },
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
@@ -22,18 +35,5 @@
     "typescript": "^5.4.0",
     "vitest": "^2.1.0",
     "wrangler": "^3.60.0"
-  },
-  "keywords": [
-    "cloudflare",
-    "turnstile",
-    "siteverify",
-    "workers",
-    "captcha",
-    "bot-protection"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/cloudflare/skills",
-    "directory": "skills/turnstile-spin/templates/worker"
   }
 }

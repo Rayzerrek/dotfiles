@@ -60,9 +60,9 @@ const details = await env.FLAGS.getBooleanDetails("new-checkout", false, {
   userId: "user-42",
 });
 
-console.log(details.value);     // true
-console.log(details.variant);   // "on"
-console.log(details.reason);    // "TARGETING_MATCH"
+console.log(details.value); // true
+console.log(details.variant); // "on"
+console.log(details.reason); // "TARGETING_MATCH"
 console.log(details.errorCode); // undefined (no error)
 ```
 
@@ -414,7 +414,7 @@ The example uses `conditions: []` because the rules are intended to match every 
 For example, to split traffic 30% / 40% / 30% across variants A, B, and C:
 
 | Variant | Share | Cumulative threshold |
-|---------|-------|----------------------|
+| ------- | ----- | -------------------- |
 | A       | 30%   | 30                   |
 | B       | 40%   | 70                   |
 | C       | 30%   | 100                  |
@@ -443,6 +443,7 @@ For example, to split traffic 30% / 40% / 30% across variants A, B, and C:
 ```
 
 Key points:
+
 - Rules are evaluated lowest-priority-number first. A user who falls into rule 1's 0-30% bucket gets `variant-a` and is not evaluated further.
 - Rule 2's 70% threshold covers the next 40% of users (31-70%).
 - Rule 3's 100% threshold catches the remaining 30% (71-100%).

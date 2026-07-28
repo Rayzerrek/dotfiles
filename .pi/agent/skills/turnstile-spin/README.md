@@ -6,16 +6,16 @@ This is a mirror of the canonical docs page at [`developers.cloudflare.com/turns
 
 ## Layout
 
-| File                              | Purpose                                                                |
-| --------------------------------- | ---------------------------------------------------------------------- |
-| `SKILL.md`                        | Main wizard instructions for the agent                                 |
-| `references/vanilla-html.md`      | Code snippet for static / vanilla HTML projects                        |
-| `references/nextjs-app.md`        | Code snippet for Next.js App Router projects                           |
-| `references/nextjs-pages.md`      | Code snippet for Next.js Pages Router projects                         |
-| `references/astro.md`             | Code snippet for Astro projects                                        |
-| `references/sveltekit.md`         | Code snippet for SvelteKit projects                                    |
-| `references/hugo.md`              | Code snippet for Hugo projects                                         |
-| `tests/validation.md`             | Validation cases matching the MVP rows in the PRD                      |
+| File                         | Purpose                                           |
+| ---------------------------- | ------------------------------------------------- |
+| `SKILL.md`                   | Main wizard instructions for the agent            |
+| `references/vanilla-html.md` | Code snippet for static / vanilla HTML projects   |
+| `references/nextjs-app.md`   | Code snippet for Next.js App Router projects      |
+| `references/nextjs-pages.md` | Code snippet for Next.js Pages Router projects    |
+| `references/astro.md`        | Code snippet for Astro projects                   |
+| `references/sveltekit.md`    | Code snippet for SvelteKit projects               |
+| `references/hugo.md`         | Code snippet for Hugo projects                    |
+| `tests/validation.md`        | Validation cases matching the MVP rows in the PRD |
 
 ## How agents load it
 

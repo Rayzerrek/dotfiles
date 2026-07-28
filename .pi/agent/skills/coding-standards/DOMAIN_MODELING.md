@@ -186,7 +186,11 @@ Prefer legal states by construction:
 
 ```ts
 type Invoice =
-  | { readonly _tag: "Draft"; readonly id: InvoiceId; readonly lines: NonEmptyArray<LineItem> }
+  | {
+      readonly _tag: "Draft";
+      readonly id: InvoiceId;
+      readonly lines: NonEmptyArray<LineItem>;
+    }
   | { readonly _tag: "Sent"; readonly id: InvoiceId; readonly sentAt: Instant }
   | { readonly _tag: "Paid"; readonly id: InvoiceId; readonly paidAt: Instant };
 ```

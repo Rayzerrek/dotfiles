@@ -52,19 +52,19 @@ These are not aesthetic preferences. When they conflict with existing code, pres
 
 Load the files whose triggers match the task.
 
-| If the change touches... | Load... |
-|---|---|
-| Shared coding-standard terms, adoption language, failure/boundary/domain/module/runtime vocabulary | [`VOCABULARY.md`](VOCABULARY.md) |
-| Domain values, invariants, branded types, value classes, state machines, lifecycle transitions, optionality, `Partial<T>`, boolean flags, operation inputs, exhaustive variants, persisted lifecycle constraints | [`DOMAIN_MODELING.md`](DOMAIN_MODELING.md) |
-| Expected failures, custom errors, not-found semantics, cancellation classification, startup config diagnostics, catch/classification | [`ERROR_HANDLING.md`](ERROR_HANDLING.md) |
-| Tracing, logging, telemetry, safe summaries, secrets, redaction, preserving reporting/correlation hooks | [`OBSERVABILITY.md`](OBSERVABILITY.md) |
-| Domain Modules, Service Modules, External Adapter Modules, interfaces, seams, dependency injection, functional core/shell, resource ownership | [`DESIGNING_MODULES.md`](DESIGNING_MODULES.md) |
-| HTTP/RPC/queue/storage/env parsing, DTOs, codecs, projections, config, runtime-hop payloads | [`BOUNDARIES_AND_PARSING.md`](BOUNDARIES_AND_PARSING.md) |
-| Cancellation, promise ownership, concurrency, idempotency, transactions, retries, workflows, detached work | [`ASYNC_AND_WORKFLOWS.md`](ASYNC_AND_WORKFLOWS.md) |
-| Tests, property tests, real seams, persistence/runtime verification, risk-matched evidence | [`TESTING_AND_VERIFICATION.md`](TESTING_AND_VERIFICATION.md) |
-| Casts, `any`, catch values, thenables, readonly contracts, collections, optionality, object spread/projection/delete, guard clauses, exports, imports, barrels, JSDoc, toolchain | [`TYPESCRIPT_CONTRACTS.md`](TYPESCRIPT_CONTRACTS.md) |
-| Workers, bindings, Durable Objects, Agents, D1, KV/R2, Queues, Workflows, workerd, service bindings, runtime hops | [`CLOUDFLARE_ARCHITECTURE.md`](CLOUDFLARE_ARCHITECTURE.md) |
-| Established Effect responsibilities, Effect services/layers, typed errors, Schema, Redacted, Effect testing/RPC | [`EFFECT.md`](EFFECT.md) |
+| If the change touches...                                                                                                                                                                                         | Load...                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Shared coding-standard terms, adoption language, failure/boundary/domain/module/runtime vocabulary                                                                                                               | [`VOCABULARY.md`](VOCABULARY.md)                             |
+| Domain values, invariants, branded types, value classes, state machines, lifecycle transitions, optionality, `Partial<T>`, boolean flags, operation inputs, exhaustive variants, persisted lifecycle constraints | [`DOMAIN_MODELING.md`](DOMAIN_MODELING.md)                   |
+| Expected failures, custom errors, not-found semantics, cancellation classification, startup config diagnostics, catch/classification                                                                             | [`ERROR_HANDLING.md`](ERROR_HANDLING.md)                     |
+| Tracing, logging, telemetry, safe summaries, secrets, redaction, preserving reporting/correlation hooks                                                                                                          | [`OBSERVABILITY.md`](OBSERVABILITY.md)                       |
+| Domain Modules, Service Modules, External Adapter Modules, interfaces, seams, dependency injection, functional core/shell, resource ownership                                                                    | [`DESIGNING_MODULES.md`](DESIGNING_MODULES.md)               |
+| HTTP/RPC/queue/storage/env parsing, DTOs, codecs, projections, config, runtime-hop payloads                                                                                                                      | [`BOUNDARIES_AND_PARSING.md`](BOUNDARIES_AND_PARSING.md)     |
+| Cancellation, promise ownership, concurrency, idempotency, transactions, retries, workflows, detached work                                                                                                       | [`ASYNC_AND_WORKFLOWS.md`](ASYNC_AND_WORKFLOWS.md)           |
+| Tests, property tests, real seams, persistence/runtime verification, risk-matched evidence                                                                                                                       | [`TESTING_AND_VERIFICATION.md`](TESTING_AND_VERIFICATION.md) |
+| Casts, `any`, catch values, thenables, readonly contracts, collections, optionality, object spread/projection/delete, guard clauses, exports, imports, barrels, JSDoc, toolchain                                 | [`TYPESCRIPT_CONTRACTS.md`](TYPESCRIPT_CONTRACTS.md)         |
+| Workers, bindings, Durable Objects, Agents, D1, KV/R2, Queues, Workflows, workerd, service bindings, runtime hops                                                                                                | [`CLOUDFLARE_ARCHITECTURE.md`](CLOUDFLARE_ARCHITECTURE.md)   |
+| Established Effect responsibilities, Effect services/layers, typed errors, Schema, Redacted, Effect testing/RPC                                                                                                  | [`EFFECT.md`](EFFECT.md)                                     |
 
 ## Strong defaults
 

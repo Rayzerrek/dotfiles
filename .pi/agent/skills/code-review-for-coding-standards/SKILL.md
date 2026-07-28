@@ -41,18 +41,18 @@ Read:
 
 Then load topic files matching the changed responsibilities:
 
-| Change touches... | Load... |
-|---|---|
-| domain values, invariants, states, transitions | `../coding-standards/DOMAIN_MODELING.md` |
-| expected failures, custom errors, catch/classification | `../coding-standards/ERROR_HANDLING.md` |
-| logs, traces, telemetry, redaction, secrets | `../coding-standards/OBSERVABILITY.md` |
-| modules, interfaces, seams, adapters, dependencies | `../coding-standards/DESIGNING_MODULES.md` |
-| parsing, DTOs, storage rows, config, projections, codecs | `../coding-standards/BOUNDARIES_AND_PARSING.md` |
-| cancellation, promises, concurrency, retries, transactions, workflows | `../coding-standards/ASYNC_AND_WORKFLOWS.md` |
-| tests, real seams, properties, persistence/runtime evidence | `../coding-standards/TESTING_AND_VERIFICATION.md` |
-| casts, `any`, readonly contracts, collections, exports, JSDoc, toolchain | `../coding-standards/TYPESCRIPT_CONTRACTS.md` |
-| Workers, Durable Objects, Agents, D1, KV/R2, Queues, Workflows | `../coding-standards/CLOUDFLARE_ARCHITECTURE.md` |
-| Effect Services/Layers, typed channel, Schema, Redacted, Effect tests | `../coding-standards/EFFECT.md` |
+| Change touches...                                                        | Load...                                           |
+| ------------------------------------------------------------------------ | ------------------------------------------------- |
+| domain values, invariants, states, transitions                           | `../coding-standards/DOMAIN_MODELING.md`          |
+| expected failures, custom errors, catch/classification                   | `../coding-standards/ERROR_HANDLING.md`           |
+| logs, traces, telemetry, redaction, secrets                              | `../coding-standards/OBSERVABILITY.md`            |
+| modules, interfaces, seams, adapters, dependencies                       | `../coding-standards/DESIGNING_MODULES.md`        |
+| parsing, DTOs, storage rows, config, projections, codecs                 | `../coding-standards/BOUNDARIES_AND_PARSING.md`   |
+| cancellation, promises, concurrency, retries, transactions, workflows    | `../coding-standards/ASYNC_AND_WORKFLOWS.md`      |
+| tests, real seams, properties, persistence/runtime evidence              | `../coding-standards/TESTING_AND_VERIFICATION.md` |
+| casts, `any`, readonly contracts, collections, exports, JSDoc, toolchain | `../coding-standards/TYPESCRIPT_CONTRACTS.md`     |
+| Workers, Durable Objects, Agents, D1, KV/R2, Queues, Workflows           | `../coding-standards/CLOUDFLARE_ARCHITECTURE.md`  |
+| Effect Services/Layers, typed channel, Schema, Redacted, Effect tests    | `../coding-standards/EFFECT.md`                   |
 
 Inspect local code/docs for conventions around errors, schemas, testing, dependency injection, observability, adapters, and module layout before reporting pattern deviations.
 

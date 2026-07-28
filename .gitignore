@@ -32,15 +32,40 @@ nvim/lazy-lock.json.bak
 !.pi/agent/skills/**
 .pi/agent/auth.json
 .pi/agent/mcp-cache.json
+.pi/agent/mcp-tokens.json
 .pi/agent/bin/
 .pi/agent/extensions/
 .pi/agent/npm/node_modules/
 .pi/agent/sessions/
+.pi/agent/logs/
+.pi/agent/history/
 *Zone.Identifier
 
-# Herdr: track stable config, ignore runtime state.
-herdr/*.log
-herdr/*.sock
-herdr/session.json
-herdr/release-notes.json
+# Wrazliwe dane (klucze, tokeny, certyfikaty, pliki środowiskowe, bazy danych, logi)
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+id_rsa
+id_ed25519
+id_ecdsa
+id_dsa
+*.token
+*.secret
+*.kdbx
+auth.json
+tokens.json
+credentials.json
+secrets.json
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.sock
 
+# Ignoruj folder herdr w dotfiles repo
+herdr/

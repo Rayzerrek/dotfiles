@@ -250,7 +250,7 @@ the hostname for GitHub Enterprise Server or GitHub Enterprise Cloud with data r
 - For GitHub Enterprise Server, prefix the hostname with the `https://` URI scheme, as it otherwise defaults to `http://`, which GitHub Enterprise Server does not support.
 - For GitHub Enterprise Cloud with data residency, use `https://YOURSUBDOMAIN.ghe.com` as the hostname.
 
-``` json
+```json
 "github": {
     "command": "docker",
     "args": [
@@ -424,7 +424,8 @@ If you don't have Docker, you can use `go build` to build the binary in the
 The `github-mcp-server` binary includes a few CLI subcommands that are helpful for debugging and exploring the server.
 
 - `github-mcp-server tool-search "<query>"` searches tools by name, description, and input parameter names. Use `--max-results` to return more matches.
-Example (color output requires a TTY; use `docker run -t` (or `-it`) when running in Docker):
+  Example (color output requires a TTY; use `docker run -t` (or `-it`) when running in Docker):
+
 ```bash
 docker run -it --rm ghcr.io/github/github-mcp-server tool-search "issue" --max-results 5
 github-mcp-server tool-search "issue" --max-results 5
@@ -583,36 +584,38 @@ docker run -i --rm \
 The following sets of tools are available:
 
 <!-- START AUTOMATED TOOLSETS -->
-|     | Toolset                 | Description                                                   |
-| --- | ----------------------- | ------------------------------------------------------------- |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/person-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/person-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/person-light.png" width="20" height="20" alt="person"></picture> | `context`               | **Strongly recommended**: Tools that provide context about the current user and GitHub context you are operating in |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/workflow-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/workflow-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/workflow-light.png" width="20" height="20" alt="workflow"></picture> | `actions` | GitHub Actions workflows and CI/CD operations |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/code-square-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/code-square-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/code-square-light.png" width="20" height="20" alt="code-square"></picture> | `code_quality` | GitHub Code Quality related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/codescan-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/codescan-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/codescan-light.png" width="20" height="20" alt="codescan"></picture> | `code_security` | Code security related tools, such as GitHub Code Scanning |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/copilot-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/copilot-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/copilot-light.png" width="20" height="20" alt="copilot"></picture> | `copilot` | Copilot related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/dependabot-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/dependabot-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/dependabot-light.png" width="20" height="20" alt="dependabot"></picture> | `dependabot` | Dependabot tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/comment-discussion-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/comment-discussion-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/comment-discussion-light.png" width="20" height="20" alt="comment-discussion"></picture> | `discussions` | GitHub Discussions related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/logo-gist-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/logo-gist-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/logo-gist-light.png" width="20" height="20" alt="logo-gist"></picture> | `gists` | GitHub Gist related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-branch-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-branch-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-branch-light.png" width="20" height="20" alt="git-branch"></picture> | `git` | GitHub Git API related tools for low-level Git operations |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/issue-opened-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/issue-opened-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/issue-opened-light.png" width="20" height="20" alt="issue-opened"></picture> | `issues` | GitHub Issues related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/tag-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/tag-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/tag-light.png" width="20" height="20" alt="tag"></picture> | `labels` | GitHub Labels related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/bell-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/bell-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/bell-light.png" width="20" height="20" alt="bell"></picture> | `notifications` | GitHub Notifications related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/organization-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/organization-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/organization-light.png" width="20" height="20" alt="organization"></picture> | `orgs` | GitHub Organization related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/project-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/project-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/project-light.png" width="20" height="20" alt="project"></picture> | `projects` | GitHub Projects related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-pull-request-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-pull-request-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-pull-request-light.png" width="20" height="20" alt="git-pull-request"></picture> | `pull_requests` | GitHub Pull Request related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/repo-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/repo-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/repo-light.png" width="20" height="20" alt="repo"></picture> | `repos` | GitHub Repository related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-lock-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-lock-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-lock-light.png" width="20" height="20" alt="shield-lock"></picture> | `secret_protection` | Secret protection related tools, such as GitHub Secret Scanning |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-light.png" width="20" height="20" alt="shield"></picture> | `security_advisories` | Security advisories related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/star-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/star-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/star-light.png" width="20" height="20" alt="star"></picture> | `stargazers` | GitHub Stargazers related tools |
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/people-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/people-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/people-light.png" width="20" height="20" alt="people"></picture> | `users` | GitHub User related tools |
+
+|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Toolset               | Description                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/person-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/person-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/person-light.png" width="20" height="20" alt="person"></picture>                                                 | `context`             | **Strongly recommended**: Tools that provide context about the current user and GitHub context you are operating in |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/workflow-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/workflow-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/workflow-light.png" width="20" height="20" alt="workflow"></picture>                                         | `actions`             | GitHub Actions workflows and CI/CD operations                                                                       |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/code-square-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/code-square-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/code-square-light.png" width="20" height="20" alt="code-square"></picture>                             | `code_quality`        | GitHub Code Quality related tools                                                                                   |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/codescan-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/codescan-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/codescan-light.png" width="20" height="20" alt="codescan"></picture>                                         | `code_security`       | Code security related tools, such as GitHub Code Scanning                                                           |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/copilot-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/copilot-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/copilot-light.png" width="20" height="20" alt="copilot"></picture>                                             | `copilot`             | Copilot related tools                                                                                               |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/dependabot-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/dependabot-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/dependabot-light.png" width="20" height="20" alt="dependabot"></picture>                                 | `dependabot`          | Dependabot tools                                                                                                    |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/comment-discussion-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/comment-discussion-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/comment-discussion-light.png" width="20" height="20" alt="comment-discussion"></picture> | `discussions`         | GitHub Discussions related tools                                                                                    |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/logo-gist-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/logo-gist-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/logo-gist-light.png" width="20" height="20" alt="logo-gist"></picture>                                     | `gists`               | GitHub Gist related tools                                                                                           |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-branch-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-branch-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-branch-light.png" width="20" height="20" alt="git-branch"></picture>                                 | `git`                 | GitHub Git API related tools for low-level Git operations                                                           |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/issue-opened-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/issue-opened-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/issue-opened-light.png" width="20" height="20" alt="issue-opened"></picture>                         | `issues`              | GitHub Issues related tools                                                                                         |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/tag-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/tag-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/tag-light.png" width="20" height="20" alt="tag"></picture>                                                             | `labels`              | GitHub Labels related tools                                                                                         |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/bell-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/bell-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/bell-light.png" width="20" height="20" alt="bell"></picture>                                                         | `notifications`       | GitHub Notifications related tools                                                                                  |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/organization-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/organization-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/organization-light.png" width="20" height="20" alt="organization"></picture>                         | `orgs`                | GitHub Organization related tools                                                                                   |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/project-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/project-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/project-light.png" width="20" height="20" alt="project"></picture>                                             | `projects`            | GitHub Projects related tools                                                                                       |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-pull-request-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-pull-request-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/git-pull-request-light.png" width="20" height="20" alt="git-pull-request"></picture>         | `pull_requests`       | GitHub Pull Request related tools                                                                                   |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/repo-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/repo-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/repo-light.png" width="20" height="20" alt="repo"></picture>                                                         | `repos`               | GitHub Repository related tools                                                                                     |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-lock-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-lock-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-lock-light.png" width="20" height="20" alt="shield-lock"></picture>                             | `secret_protection`   | Secret protection related tools, such as GitHub Secret Scanning                                                     |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/shield-light.png" width="20" height="20" alt="shield"></picture>                                                 | `security_advisories` | Security advisories related tools                                                                                   |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/star-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/star-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/star-light.png" width="20" height="20" alt="star"></picture>                                                         | `stargazers`          | GitHub Stargazers related tools                                                                                     |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/people-dark.png"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/people-light.png"><img src="https://raw.githubusercontent.com/github/github-mcp-server/main/pkg/octicons/icons/people-light.png" width="20" height="20" alt="people"></picture>                                                 | `users`               | GitHub User related tools                                                                                           |
+
 <!-- END AUTOMATED TOOLSETS -->
 
 ### Additional Toolsets in Remote GitHub MCP Server
 
-| Toolset                 | Description                                                   |
-| ----------------------- | ------------------------------------------------------------- |
-| `copilot` | Copilot related tools (e.g. Copilot Coding Agent) |
-| `copilot_spaces` | Copilot Spaces related tools |
+| Toolset                      | Description                                                |
+| ---------------------------- | ---------------------------------------------------------- |
+| `copilot`                    | Copilot related tools (e.g. Copilot Coding Agent)          |
+| `copilot_spaces`             | Copilot Spaces related tools                               |
 | `github_support_docs_search` | Search docs to answer GitHub product and support questions |
 
 ## Tools
@@ -632,7 +635,7 @@ The following sets of tools are available:
     - Provide a workflow run ID for 'get_workflow_run', 'get_workflow_run_usage', and 'get_workflow_run_logs_url' methods.
     - Provide an artifact ID for 'download_workflow_run_artifact' method.
     - Provide a job ID for 'get_workflow_job' method.
-     (string, required)
+      (string, required)
 
 - **actions_list** - List GitHub Actions workflows in a repository
   - **Required OAuth Scopes**: `repo`
@@ -645,7 +648,7 @@ The following sets of tools are available:
     - Do not provide any resource ID for 'list_workflows' method.
     - Provide a workflow ID or workflow file name (e.g. ci.yaml) for 'list_workflow_runs' method, or omit to list all workflow runs in the repository.
     - Provide a workflow run ID for 'list_workflow_jobs' and 'list_workflow_run_artifacts' methods.
-     (string, optional)
+      (string, optional)
   - `workflow_jobs_filter`: Filters for workflow jobs. **ONLY** used when method is 'list_workflow_jobs' (object, optional)
   - `workflow_runs_filter`: Filters for workflow runs. **ONLY** used when method is 'list_workflow_runs' (object, optional)
 
@@ -788,7 +791,7 @@ The following sets of tools are available:
     - 'delete' - deletes a discussion comment.
     - 'mark_answer' - marks a discussion comment as the answer (Q&A only).
     - 'unmark_answer' - unmarks a discussion comment as the answer (Q&A only).
-     (string, required)
+      (string, required)
   - `owner`: Repository owner (required for 'add' and 'reply' methods) (string, optional)
   - `repo`: Repository name (required for 'add' and 'reply' methods) (string, optional)
 
@@ -896,7 +899,7 @@ The following sets of tools are available:
     3. get_sub_issues - Get sub-issues (children) of the issue.
     4. get_parent - Get the parent issue, if this issue is a sub-issue of another.
     5. get_labels - Get labels assigned to the issue.
-     (string, required)
+       (string, required)
   - `owner`: The owner of the repository (string, required)
   - `page`: Page number for pagination (min 1) (number, optional)
   - `perPage`: Results per page for pagination (min 1, max 100) (number, optional)
@@ -914,7 +917,7 @@ The following sets of tools are available:
     Options are:
     - 'create' - creates a new issue.
     - 'update' - updates an existing issue.
-     (string, required)
+      (string, required)
   - `milestone`: Milestone number (number, optional)
   - `owner`: Repository owner (string, required)
   - `repo`: Repository name (string, required)
@@ -968,7 +971,7 @@ The following sets of tools are available:
     - 'add' - add a sub-issue to a parent issue in a GitHub repository.
     - 'remove' - remove a sub-issue from a parent issue in a GitHub repository.
     - 'reprioritize' - change the order of sub-issues within a parent issue in a GitHub repository. Use either 'after_id' or 'before_id' to specify the new position.
-    				 (string, required)
+      (string, required)
   - `owner`: Repository owner (string, required)
   - `replace_parent`: When true, replaces the sub-issue's current parent issue. Use with 'add' method only. (boolean, optional)
   - `repo`: Repository name (string, required)
@@ -1133,7 +1136,7 @@ The following sets of tools are available:
 - **add_reply_to_pull_request_comment** - Add reply to pull request comment
   - **Required OAuth Scopes**: `repo`
   - `body`: The text of the reply. Required unless reaction is provided. (string, optional)
-  - `commentId`: The numeric ID of the pull request review comment to reply or react to. Use the number from a #discussion_r... anchor, not the GraphQL thread node ID (PRRT_...). (number, required)
+  - `commentId`: The numeric ID of the pull request review comment to reply or react to. Use the number from a #discussion*r... anchor, not the GraphQL thread node ID (PRRT*...). (number, required)
   - `owner`: Repository owner (string, required)
   - `pullNumber`: Pull request number. Required when body is provided. (number, optional)
   - `reaction`: Emoji reaction to add. Required unless body is provided. (string, optional)
@@ -1175,18 +1178,18 @@ The following sets of tools are available:
 - **pull_request_read** - Get details for a single pull request
   - **Required OAuth Scopes**: `repo`
   - `after`: Cursor for pagination, used only by the get_review_comments method. Pass the endCursor from the previous page's PageInfo to fetch the next page. (string, optional)
-  - `method`: Action to specify what pull request data needs to be retrieved from GitHub. 
-    Possible options: 
-     1. get - Get details of a specific pull request.
-     2. get_diff - Get the diff of a pull request.
-     3. get_status - Get combined commit status of a head commit in a pull request.
-     4. get_files - Get the list of files changed in a pull request. Use with pagination parameters to control the number of results returned.
-     5. get_commits - Get the list of commits on a pull request. Use with pagination parameters to control the number of results returned.
-     6. get_review_comments - Get review threads on a pull request. Each thread contains logically grouped review comments made on the same code location during pull request reviews. Returns threads with metadata (isResolved, isOutdated, isCollapsed) and their associated comments. Use cursor-based pagination (perPage, after) to control results.
-     7. get_reviews - Get the reviews on a pull request. When asked for review comments, use get_review_comments method. Use with pagination parameters to control the number of results returned.
-     8. get_comments - Get comments on a pull request. Use this if user doesn't specifically want review comments. Use with pagination parameters to control the number of results returned.
-     9. get_check_runs - Get check runs for the head commit of a pull request. Check runs are the individual CI/CD jobs and checks that run on the PR.
-     (string, required)
+  - `method`: Action to specify what pull request data needs to be retrieved from GitHub.
+    Possible options:
+    1.  get - Get details of a specific pull request.
+    2.  get_diff - Get the diff of a pull request.
+    3.  get_status - Get combined commit status of a head commit in a pull request.
+    4.  get_files - Get the list of files changed in a pull request. Use with pagination parameters to control the number of results returned.
+    5.  get_commits - Get the list of commits on a pull request. Use with pagination parameters to control the number of results returned.
+    6.  get_review_comments - Get review threads on a pull request. Each thread contains logically grouped review comments made on the same code location during pull request reviews. Returns threads with metadata (isResolved, isOutdated, isCollapsed) and their associated comments. Use cursor-based pagination (perPage, after) to control results.
+    7.  get_reviews - Get the reviews on a pull request. When asked for review comments, use get_review_comments method. Use with pagination parameters to control the number of results returned.
+    8.  get_comments - Get comments on a pull request. Use this if user doesn't specifically want review comments. Use with pagination parameters to control the number of results returned.
+    9.  get_check_runs - Get check runs for the head commit of a pull request. Check runs are the individual CI/CD jobs and checks that run on the PR.
+        (string, required)
   - `owner`: Repository owner (string, required)
   - `page`: Page number for pagination (min 1) (number, optional)
   - `perPage`: Results per page for pagination (min 1, max 100) (number, optional)
@@ -1630,9 +1633,9 @@ The same override mechanism can be used to customize the MCP server's `name` and
 multiple GitHub MCP Server instances (e.g., one for github.com and one for
 GitHub Enterprise Server) so that agents can distinguish between them.
 
-| Key | Environment Variable | Default |
-|-----|---------------------|---------|
-| `SERVER_NAME` | `GITHUB_MCP_SERVER_NAME` | `github-mcp-server` |
+| Key            | Environment Variable      | Default             |
+| -------------- | ------------------------- | ------------------- |
+| `SERVER_NAME`  | `GITHUB_MCP_SERVER_NAME`  | `github-mcp-server` |
 | `SERVER_TITLE` | `GITHUB_MCP_SERVER_TITLE` | `GitHub MCP Server` |
 
 For example, to configure a server instance for GitHub Enterprise Server:

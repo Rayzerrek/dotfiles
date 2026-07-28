@@ -54,23 +54,23 @@ import type { Actions } from "./$types";
 import { fail } from "@sveltejs/kit";
 
 export const actions: Actions = {
-	default: async ({ request }) => {
-		const data = await request.formData();
-		const token = data.get("cf-turnstile-response") as string;
+  default: async ({ request }) => {
+    const data = await request.formData();
+    const token = data.get("cf-turnstile-response") as string;
 
-		const verify = await fetch("https://YOUR_WORKER_URL/", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ token }),
-		});
-		const result = await verify.json();
-		if (!result.success) {
-			return fail(403, { error: "Verification failed" });
-		}
+    const verify = await fetch("https://YOUR_WORKER_URL/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+    const result = await verify.json();
+    if (!result.success) {
+      return fail(403, { error: "Verification failed" });
+    }
 
-		// process signup
-		return { ok: true };
-	},
+    // process signup
+    return { ok: true };
+  },
 };
 ```
 
@@ -78,7 +78,7 @@ With this variant the form posts via SvelteKit's progressive enhancement; the pa
 
 ## Substitutions
 
-| Placeholder        | Replace with                                |
-| ------------------ | ------------------------------------------- |
-| `YOUR_WORKER_URL`  | Deployed Worker URL from Step 5             |
-| `YOUR_SITEKEY`     | Widget site key from Step 4                 |
+| Placeholder       | Replace with                    |
+| ----------------- | ------------------------------- |
+| `YOUR_WORKER_URL` | Deployed Worker URL from Step 5 |
+| `YOUR_SITEKEY`    | Widget site key from Step 4     |

@@ -50,7 +50,10 @@ Prefer:
 const result = await passwordReset.requestReset(email);
 
 expect(result).toEqual(ok({ delivery: "queued" }));
-expect(emailAdapter.sentEmails).toContainEqual({ to: email, template: "reset" });
+expect(emailAdapter.sentEmails).toContainEqual({
+  to: email,
+  template: "reset",
+});
 ```
 
 The fake adapter is supplied through the production seam and exposes records for assertions.
@@ -98,7 +101,9 @@ Parsers, smart constructors, transitions, and pure decisions need focused behavi
 
 ```ts
 it.prop("normalization is idempotent", [emailAddressArbitrary], (email) => {
-  expect(EmailAddress.normalize(EmailAddress.normalize(email))).toEqual(EmailAddress.normalize(email));
+  expect(EmailAddress.normalize(EmailAddress.normalize(email))).toEqual(
+    EmailAddress.normalize(email),
+  );
 });
 ```
 

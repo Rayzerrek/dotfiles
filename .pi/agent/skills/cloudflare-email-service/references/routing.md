@@ -39,9 +39,12 @@ The `message` parameter is a `ForwardableEmailMessage`. Run `npx wrangler types`
 await message.forward("team@company.com");
 
 // With custom headers
-await message.forward("team@company.com", new Headers({
-  "X-Original-Recipient": message.to,
-}));
+await message.forward(
+  "team@company.com",
+  new Headers({
+    "X-Original-Recipient": message.to,
+  }),
+);
 ```
 
 Destination must be verified first (Dashboard or `wrangler email routing addresses create`).
@@ -124,12 +127,23 @@ The `email()` handler stores the email and returns immediately. Replies happen l
 import PostalMime from "postal-mime";
 
 export class MailboxDO extends DurableObject {
-  async storeEmail(from: string, to: string, subject: string, body: string,
-                   messageId: string, inReplyTo: string | null) {
+  async storeEmail(
+    from: string,
+    to: string,
+    subject: string,
+    body: string,
+    messageId: string,
+    inReplyTo: string | null,
+  ) {
     this.ctx.storage.sql.exec(
       `INSERT INTO emails (sender, recipient, subject, body, message_id, in_reply_to, date, read)
        VALUES (?, ?, ?, ?, ?, ?, datetime('now'), 0)`,
-      from, to, subject, body, messageId, inReplyTo
+      from,
+      to,
+      subject,
+      body,
+      messageId,
+      inReplyTo,
     );
   }
 }
@@ -163,7 +177,11 @@ When a user (or agent) decides to reply, build proper threading headers and send
 
 ```typescript
 // In an HTTP handler or agent tool — not in the email() handler
-async function replyToStoredEmail(env: Env, original: StoredEmail, replyBody: string) {
+async function replyToStoredEmail(
+  env: Env,
+  original: StoredEmail,
+  replyBody: string,
+) {
   // Build threading headers (In-Reply-To + References per RFC 2822)
   const headers: Record<string, string> = {};
   if (original.messageId) {

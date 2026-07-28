@@ -43,7 +43,7 @@ The user pasted the prompt. You are in a multi-step dialog. Detect what you can,
      1. **Export + relaunch** (token never enters chat): `export CLOUDFLARE_API_TOKEN=<token>` then restart the agent from that terminal.
      2. **Save to file** (token in file with user-only perms, not in chat): `umask 077 && printf '%s' '<token>' > ~/.cf-turnstile-token`, then read with `TOKEN=$(cat ~/.cf-turnstile-token)`.
      3. **Paste in chat** (fastest, but token lands in conversation log; user should rotate it after if the log is ever shared).
-     If the user picks option 3 (paste in chat), you can use the wait to run Steps 5, 6, 7 (Domain, Codebase scan, Insertion plan). Options 1 and 2 will restart your session, so do not pre-fetch state in those cases. When auth is established, re-run `auth-probe.sh`, then continue to Step 8.
+        If the user picks option 3 (paste in chat), you can use the wait to run Steps 5, 6, 7 (Domain, Codebase scan, Insertion plan). Options 1 and 2 will restart your session, so do not pre-fetch state in those cases. When auth is established, re-run `auth-probe.sh`, then continue to Step 8.
    - `multiple_accounts`: the token covers more than one account and `$CLOUDFLARE_ACCOUNT_ID` is unset. Present the numbered `accounts` list. **[wait for user]** Then export `CLOUDFLARE_ACCOUNT_ID=<chosen>` and re-run `auth-probe.sh`.
    - `account_mismatch`: `$CLOUDFLARE_ACCOUNT_ID` is set but isn't one of the token's accounts. Show the `accounts` list and ask the user to either `unset CLOUDFLARE_ACCOUNT_ID` or set it to one of those IDs.
 
@@ -102,8 +102,7 @@ If the user tells you they already have a Turnstile widget set up and want to wi
    - anything else: ask whether they want siteverify on top of pre-clearance, or exit per the scope boundary.
 4. Continue from Step 9 (Worker deploy). Site key does not change. Dashboard's `Deployment` column flips from `Manual` to `Spin` on the first request carrying `data-action="turnstile-spin-v1"` (this skill) or `data-action="turnstile-spin-v2"` (dashboard "Set up with Spin" button).
 
-If the user is recovering a widget that was created via the dashboard "Set up with Spin" button, a managed Worker is likely already deployed in the account. Confirm with the user whether they want a fresh Worker (proceed) or just need help wiring the frontend to the existing one (skip to Step 10 and ask for the existing Worker URL).
-5. Never recreate the widget to get a fresh secret. That breaks the existing sitekey everywhere it's deployed.
+If the user is recovering a widget that was created via the dashboard "Set up with Spin" button, a managed Worker is likely already deployed in the account. Confirm with the user whether they want a fresh Worker (proceed) or just need help wiring the frontend to the existing one (skip to Step 10 and ask for the existing Worker URL). 5. Never recreate the widget to get a fresh secret. That breaks the existing sitekey everywhere it's deployed.
 
 ### The frontend-edit contract
 
@@ -127,32 +126,35 @@ If the existing handler was a stub, Spin leaves it a stub gated on success. The 
 During the Step 6 codebase scan, also look for existing reCAPTCHA or hCaptcha. If found, switch Step 7 to a migration plan.
 
 Detection signals:
+
 - reCAPTCHA: `https://www.google.com/recaptcha/api.js`, `class="g-recaptcha"`, `data-sitekey="6L..."`, backend POST to `/recaptcha/api/siteverify`
 - hCaptcha: `https://js.hcaptcha.com/1/api.js`, `class="h-captcha"`, backend POST to `https://hcaptcha.com/siteverify`
 
 Substitution:
+
 - Replace script tags with `https://challenges.cloudflare.com/turnstile/v0/api.js` (`async defer`).
 - Replace `class="g-recaptcha"` / `class="h-captcha"` divs with `class="cf-turnstile"`, update `data-sitekey` to the new Turnstile sitekey, add `data-action="turnstile-spin-v1"`.
 - Token field changes from `g-recaptcha-response` to `cf-turnstile-response`.
 - Backend siteverify URL points at the Spin-deployed Worker. Drop `RECAPTCHA_SECRET` / `HCAPTCHA_SECRET` env vars.
 
 Edge cases to surface to the user:
+
 - **reCAPTCHA v3 score thresholds.** Turnstile has no score. Tell the user explicitly that migrated code will reject on `success === false`.
 - **reCAPTCHA Enterprise.** Don't auto-migrate. Point at [developers.cloudflare.com/turnstile/migration/recaptcha/](https://developers.cloudflare.com/turnstile/migration/recaptcha/).
 - **Custom `action=` values.** Preserve any custom action the user passed to `grecaptcha.execute` as `data-action` on the widget. Use `turnstile-spin-v1` only when no custom action exists.
 
 ## Edge cases
 
-| Situation | Action |
-|---|---|
-| `wrangler` not installed | Install path: `npm install --save-dev wrangler` (Node project) or `npm install -g wrangler` (other) |
-| Multiple Cloudflare accounts | `scripts/auth-probe.sh` returns all accounts; ask the user to choose, export `CLOUDFLARE_ACCOUNT_ID` |
-| Cloudflare Pages project | Deploy the managed Worker anyway, OR suggest the [Pages Plugin](https://developers.cloudflare.com/pages/functions/plugins/turnstile/) |
-| `EXPECTED_HOSTNAME` mismatch | Update widget domains via PUT, not PATCH (PATCH returns `10405 Method not allowed`): `curl -X PUT .../widgets/$SITEKEY -d '{"name":"...","mode":"managed","domains":[...]}'` |
-| Worker name conflict | `worker-deploy.sh` retries automatically with a hash suffix |
-| Token expired mid-flow | Stop, re-run `scripts/auth-probe.sh`, prompt for fresh credentials |
-| Step 11 returns `missing-input-secret` | Secret didn't propagate. Re-set: `echo "$WIDGET_SECRET" \| npx wrangler secret put TURNSTILE_SECRET_KEY --name <worker_name from worker-deploy.sh output>`, wait 10s, re-validate. Use the `worker_name` field returned by `worker-deploy.sh`; do not rely on a `$WORKER_NAME` env var. |
-| `worker-deploy.sh` returns `set_secret_failed` | Worker is deployed but secret is not set. Re-run only the secret-put using the returned `worker_name`: `echo "$WIDGET_SECRET" \| npx wrangler secret put TURNSTILE_SECRET_KEY --name <worker_name>`. Surface the `detail` field to the user — it carries the wrangler error. |
+| Situation                                      | Action                                                                                                                                                                                                                                                                                  |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `wrangler` not installed                       | Install path: `npm install --save-dev wrangler` (Node project) or `npm install -g wrangler` (other)                                                                                                                                                                                     |
+| Multiple Cloudflare accounts                   | `scripts/auth-probe.sh` returns all accounts; ask the user to choose, export `CLOUDFLARE_ACCOUNT_ID`                                                                                                                                                                                    |
+| Cloudflare Pages project                       | Deploy the managed Worker anyway, OR suggest the [Pages Plugin](https://developers.cloudflare.com/pages/functions/plugins/turnstile/)                                                                                                                                                   |
+| `EXPECTED_HOSTNAME` mismatch                   | Update widget domains via PUT, not PATCH (PATCH returns `10405 Method not allowed`): `curl -X PUT .../widgets/$SITEKEY -d '{"name":"...","mode":"managed","domains":[...]}'`                                                                                                            |
+| Worker name conflict                           | `worker-deploy.sh` retries automatically with a hash suffix                                                                                                                                                                                                                             |
+| Token expired mid-flow                         | Stop, re-run `scripts/auth-probe.sh`, prompt for fresh credentials                                                                                                                                                                                                                      |
+| Step 11 returns `missing-input-secret`         | Secret didn't propagate. Re-set: `echo "$WIDGET_SECRET" \| npx wrangler secret put TURNSTILE_SECRET_KEY --name <worker_name from worker-deploy.sh output>`, wait 10s, re-validate. Use the `worker_name` field returned by `worker-deploy.sh`; do not rely on a `$WORKER_NAME` env var. |
+| `worker-deploy.sh` returns `set_secret_failed` | Worker is deployed but secret is not set. Re-run only the secret-put using the returned `worker_name`: `echo "$WIDGET_SECRET" \| npx wrangler secret put TURNSTILE_SECRET_KEY --name <worker_name>`. Surface the `detail` field to the user — it carries the wrangler error.            |
 
 ## Telemetry marker
 

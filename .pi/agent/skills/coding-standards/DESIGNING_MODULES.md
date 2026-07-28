@@ -113,7 +113,9 @@ Prefer narrow dependency interfaces at the consumer:
 
 ```ts
 type UsersForPasswordReset = {
-  findActiveByEmail(email: EmailAddress): Promise<Result<ActiveUser, UserLookupError>>;
+  findActiveByEmail(
+    email: EmailAddress,
+  ): Promise<Result<ActiveUser, UserLookupError>>;
 };
 
 export class PasswordReset {
@@ -137,7 +139,9 @@ Also avoid interface confetti:
 
 ```ts
 interface FindUserByEmail {
-  findActiveByEmail(email: EmailAddress): Promise<Result<ActiveUser, UserLookupError>>;
+  findActiveByEmail(
+    email: EmailAddress,
+  ): Promise<Result<ActiveUser, UserLookupError>>;
 }
 ```
 

@@ -2,11 +2,11 @@
 
 Code templates with PyIceberg (lightweight, no JVM) and PySpark (full Iceberg ecosystem). For per-engine config (DuckDB, Trino, Snowflake, StarRocks) and partitioning/maintenance best practices, pull `https://developers.cloudflare.com/r2/data-catalog/config-examples/` and `.../table-maintenance/`.
 
-| Need | Tool |
-|------|------|
-| Catalog ops, append/scan, small-medium loads | PyIceberg |
-| Batch ETL, INSERT INTO SELECT, DELETE/MERGE, write-back, >1 TB maintenance | PySpark |
-| Pure SQL analytics (no writes) | [R2 SQL](../r2-sql/) |
+| Need                                                                       | Tool                 |
+| -------------------------------------------------------------------------- | -------------------- |
+| Catalog ops, append/scan, small-medium loads                               | PyIceberg            |
+| Batch ETL, INSERT INTO SELECT, DELETE/MERGE, write-back, >1 TB maintenance | PySpark              |
+| Pure SQL analytics (no writes)                                             | [R2 SQL](../r2-sql/) |
 
 ## PyIceberg: Connect, Create, Load
 

@@ -7,14 +7,14 @@ Two APIs: the **control-plane REST API** (Cloudflare-specific) and the **Iceberg
 Base: `https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/r2-catalog/{BUCKET}`
 Auth: `Authorization: Bearer $API_TOKEN`
 
-| Operation | Method | Path |
-|-----------|--------|------|
-| Get catalog details | GET | `/r2-catalog/{bucket}` |
-| Enable / disable | POST | `/r2-catalog/{bucket}/enable` · `/disable` |
-| Store compaction credential | POST | `/r2-catalog/{bucket}/credential` |
-| List namespaces | GET | `/namespaces` |
-| List tables | GET | `/namespaces/{ns}/tables` |
-| **Get table metadata** | GET | `/namespaces/{ns}/tables/{table}` |
+| Operation                     | Method   | Path                                                                             |
+| ----------------------------- | -------- | -------------------------------------------------------------------------------- |
+| Get catalog details           | GET      | `/r2-catalog/{bucket}`                                                           |
+| Enable / disable              | POST     | `/r2-catalog/{bucket}/enable` · `/disable`                                       |
+| Store compaction credential   | POST     | `/r2-catalog/{bucket}/credential`                                                |
+| List namespaces               | GET      | `/namespaces`                                                                    |
+| List tables                   | GET      | `/namespaces/{ns}/tables`                                                        |
+| **Get table metadata**        | GET      | `/namespaces/{ns}/tables/{table}`                                                |
 | Get/update maintenance config | GET/POST | `/maintenance-configs` and `/namespaces/{ns}/tables/{table}/maintenance-configs` |
 
 List endpoints accept `?return_uuids=true`, `?return_details=true`, `?parent={ns}`, and pagination. **Nested namespaces use `%1F` (Unit Separator)**, not `/` or `.`: `/namespaces/parent%1Fchild/tables`.
@@ -46,30 +46,38 @@ curl -s "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/r2-catalog/$B
 ```
 
 ```json
-{"result": {
-  "identifier": {"namespace": ["live"], "name": "earthquakes"},
-  "table_uuid": "019edccf-3ac8-73e3-...",
-  "metadata_location": "s3://live-data/__r2_data_catalog/.../metadata/01225-....metadata.json",
-  "total_snapshots": 1225,
-  "returned_snapshots": 10,
-  "metadata": { /* standard Iceberg TableMetadata: schemas, partition-specs, sort-orders,
-                   properties, current-snapshot-id, snapshots (≤10), snapshot-log, refs */ }
-}, "success": true}
+{
+  "result": {
+    "identifier": { "namespace": ["live"], "name": "earthquakes" },
+    "table_uuid": "019edccf-3ac8-73e3-...",
+    "metadata_location": "s3://live-data/__r2_data_catalog/.../metadata/01225-....metadata.json",
+    "total_snapshots": 1225,
+    "returned_snapshots": 10,
+    "metadata": {
+      /* standard Iceberg TableMetadata: schemas, partition-specs, sort-orders,
+                   properties, current-snapshot-id, snapshots (≤10), snapshot-log, refs */
+    }
+  },
+  "success": true
+}
 ```
 
-| Field | Description |
-|-------|-------------|
-| `identifier` | `{namespace: [...], name}` |
-| `table_uuid` | Iceberg table UUID |
-| `metadata_location` | R2 path to current metadata file |
-| `total_snapshots` | Total before pruning |
-| `returned_snapshots` | Count in `metadata.snapshots` (max 10) |
-| `metadata` | Standard [Iceberg TableMetadata](https://iceberg.apache.org/spec/#table-metadata-fields), arrays pruned to 10 |
+| Field                | Description                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `identifier`         | `{namespace: [...], name}`                                                                                    |
+| `table_uuid`         | Iceberg table UUID                                                                                            |
+| `metadata_location`  | R2 path to current metadata file                                                                              |
+| `total_snapshots`    | Total before pruning                                                                                          |
+| `returned_snapshots` | Count in `metadata.snapshots` (max 10)                                                                        |
+| `metadata`           | Standard [Iceberg TableMetadata](https://iceberg.apache.org/spec/#table-metadata-fields), arrays pruned to 10 |
 
 ### Error Format
 
 ```json
-{"success": false, "errors": [{"code": 10000, "message": "Authentication error"}]}
+{
+  "success": false,
+  "errors": [{ "code": 10000, "message": "Authentication error" }]
+}
 ```
 
 Standard HTTP codes (401 auth, 403 perms, 404 not enabled/found, 409 conflict).
@@ -95,6 +103,7 @@ table.scan(row_filter="id > 100").to_pandas()
 ```
 
 Schema evolution (add nullable columns; widen types only):
+
 ```python
 with table.update_schema() as u:
     u.add_column("user_id", LongType(), doc="User ID")
@@ -102,6 +111,7 @@ with table.update_schema() as u:
 ```
 
 Time-travel:
+
 ```python
 table.scan(snapshot_id=table.snapshots()[-2].snapshot_id)
 table.scan(as_of_timestamp=ms_epoch)

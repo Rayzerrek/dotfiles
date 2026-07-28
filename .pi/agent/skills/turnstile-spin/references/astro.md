@@ -74,29 +74,29 @@ import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
 
 export const server = {
-	signup: defineAction({
-		accept: "form",
-		input: z.object({
-			email: z.string().email(),
-			"cf-turnstile-response": z.string(),
-		}),
-		handler: async (input) => {
-			const verify = await fetch("https://YOUR_WORKER_URL/", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ token: input["cf-turnstile-response"] }),
-			});
-			const data = await verify.json();
-			if (!data.success) throw new Error("Verification failed");
-			// process signup
-		},
-	}),
+  signup: defineAction({
+    accept: "form",
+    input: z.object({
+      email: z.string().email(),
+      "cf-turnstile-response": z.string(),
+    }),
+    handler: async (input) => {
+      const verify = await fetch("https://YOUR_WORKER_URL/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: input["cf-turnstile-response"] }),
+      });
+      const data = await verify.json();
+      if (!data.success) throw new Error("Verification failed");
+      // process signup
+    },
+  }),
 };
 ```
 
 ## Substitutions
 
-| Placeholder        | Replace with                                |
-| ------------------ | ------------------------------------------- |
-| `YOUR_WORKER_URL`  | Deployed Worker URL from Step 5             |
-| `YOUR_SITEKEY`     | Widget site key from Step 4                 |
+| Placeholder       | Replace with                    |
+| ----------------- | ------------------------------- |
+| `YOUR_WORKER_URL` | Deployed Worker URL from Step 5 |
+| `YOUR_SITEKEY`    | Widget site key from Step 4     |

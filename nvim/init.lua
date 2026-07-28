@@ -1,335 +1,538 @@
--- Neovim 0.12+ Native LSP Configuration
--- Uses vim.lsp.config and vim.lsp.enable (introduced in 0.12)
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
--- Ustawienie spacji jako klawisza Leader
-vim.g.mapleader = " "
+vim.cmd.syntax('enable')
+vim.cmd('filetype plugin indent on')
 
--- ============================================================================
--- Native Plugin Manager (vim.pack) -- Neovim 0.12+
--- ============================================================================
-
-local plugins = {
-	"plugins.vesper",
-	"plugins.cmp",
-	"plugins.typescript_tools",
-	"plugins.oil",
-	"plugins.lualine",
-}
-
-local specs = {}
-for _, plugin in ipairs(plugins) do
-	local p = require(plugin)
-	if p.spec then
-		if p.spec.src then
-			table.insert(specs, p.spec)
-		else
-			for _, sub_spec in ipairs(p.spec) do
-				table.insert(specs, sub_spec)
-			end
-		end
-	end
-end
-
-vim.pack.add(specs)
-
--- ============================================================================
--- Colorscheme
--- ============================================================================
-
-require("plugins.vesper").config()
-
--- ============================================================================
--- Options & Indentation (Neovim Native Options)
--- ============================================================================
-
--- Domyślnie wcięcia na 2 spacje (dla JS, TS i pozostałych języków)
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.expandtab = true
-
--- Używaj systemowego schowka (yank/paste współpracuje z systemem)
-vim.opt.clipboard = "unnamedplus"
-
--- Ukryj natywny wskaźnik trybu (-- INSERT --), ponieważ lualine go dubluje
-vim.opt.showmode = false
-
--- Ustawienie PowerShell (pwsh) jako domyślnej powłoki (shell) na Windowsie
-local function get_powershell_shell()
-	local localappdata = vim.env.LOCALAPPDATA or "C:\\Users\\kacpe\\AppData\\Local"
-	local target_dir = localappdata .. "\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe"
-	local old_path = vim.env.PATH
-	vim.env.PATH = target_dir .. ";" .. old_path
-	local resolved = vim.fn.exepath("pwsh")
-	vim.env.PATH = old_path
-	if resolved ~= "" then
-		return '"' .. resolved .. '"'
-	end
-	return "powershell"
-end
-
-local powershell_options = {
-	shell = get_powershell_shell(),
-	shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy Bypass -Command [Console]::InputEncoding=[System.Text.Encoding]::UTF8;[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;$Input|Out-String|Invoke-Expression",
-	shellredir = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
-	shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
-	shellquote = "",
-	shellxquote = "",
-}
-
-for option, value in pairs(powershell_options) do
-	vim.opt[option] = value
-end
-
--- Wcięcie na 4 spacje dedykowane dla Pythona
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "python",
-	callback = function()
-		vim.opt_local.tabstop = 4
-		vim.opt_local.shiftwidth = 4
-		vim.opt_local.expandtab = true
-	end,
+vim.filetype.add({
+  extension = {
+    svx = 'markdown',
+  },
+  pattern = {
+    ['.*%.md%.njk'] = 'markdown',
+  },
 })
 
--- ============================================================================
--- Global LSP Settings
--- ============================================================================
+local state_dir = vim.fn.stdpath('state')
+local backup_dir = state_dir .. '/backup'
+local undo_dir = state_dir .. '/undo'
+
+vim.fn.mkdir(backup_dir, 'p')
+vim.fn.mkdir(undo_dir, 'p')
+
+vim.opt.clipboard:append('unnamedplus')
+vim.o.showmode = true
+vim.o.showcmd = true
+vim.o.history = 500
+vim.o.wildmenu = true
+vim.o.scrolloff = 3
+vim.o.number = true
+vim.o.colorcolumn = '80'
+vim.o.wrap = false
+vim.o.showmatch = true
+vim.o.backspace = 'indent,eol,start'
+vim.o.joinspaces = false
+vim.o.timeout = false
+vim.o.ttimeout = true
+vim.o.ttimeoutlen = 10
+vim.o.termguicolors = true
+vim.o.inccommand = 'nosplit'
+vim.o.signcolumn = 'yes'
+
+vim.o.undofile = true
+vim.o.undodir = undo_dir .. '//'
+vim.o.backup = true
+vim.o.backupdir = backup_dir .. '//'
+vim.o.swapfile = false
+
+vim.o.incsearch = true
+vim.o.hlsearch = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
+
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.softtabstop = 2
+vim.o.shiftround = true
+vim.o.expandtab = true
+
+vim.o.list = true
+vim.o.listchars = 'tab:▸ ,eol:¬,extends:❯,precedes:❮'
+vim.o.ruler = true
+vim.o.laststatus = 2
+vim.o.tags = './tags;'
+vim.opt.wildignore:append({ '*/.git/*', '*/.hg/*', '*/.svn/*', '*/vendor/bundle/*', '*/node_modules/*' })
+
+if vim.fn.executable('rg') == 1 then
+  vim.o.grepprg = 'rg --vimgrep'
+end
+
+vim.api.nvim_create_autocmd('VimResized', {
+  command = 'wincmd =',
+})
+
+vim.api.nvim_create_autocmd('PackChanged', {
+  callback = function(ev)
+    local name = ev.data.spec.name
+    local kind = ev.data.kind
+
+    if name == 'fff.nvim' and (kind == 'install' or kind == 'update') then
+      if not ev.data.active then
+        vim.cmd.packadd('fff.nvim')
+      end
+
+      require('fff.download').download_or_build_binary()
+    elseif name == 'nvim-treesitter' and (kind == 'install' or kind == 'update') then
+      if not ev.data.active then
+        vim.cmd.packadd('nvim-treesitter')
+      end
+
+      vim.cmd.TSUpdate()
+    end
+  end,
+})
+
+vim.pack.add({
+  'https://github.com/nexxeln/vesper.nvim',
+  { src = 'https://github.com/dmtrKovalenko/fff.nvim', name = 'fff.nvim' },
+  'https://github.com/tpope/vim-surround',
+  'https://github.com/bronson/vim-visual-star-search',
+  'https://github.com/stevearc/oil.nvim',
+  'https://github.com/nvim-treesitter/nvim-treesitter',
+  'https://github.com/Wansmer/treesj',
+  'https://github.com/neovim/nvim-lspconfig',
+  'https://github.com/stevearc/conform.nvim',
+}, { confirm = false })
+
+require('vesper').setup({
+  transparent = false,
+})
+
+vim.cmd.colorscheme('vesper')
+
+local function set_fff_highlights()
+  vim.api.nvim_set_hl(0, 'FFFNormal', { fg = '#FFFFFF', bg = '#1A1A1A' })
+  vim.api.nvim_set_hl(0, 'FFFBorder', { fg = '#282828', bg = '#1A1A1A' })
+  vim.api.nvim_set_hl(0, 'FFFCursor', { bg = '#232323' })
+end
+
+set_fff_highlights()
+
+vim.api.nvim_create_autocmd('ColorScheme', {
+  callback = set_fff_highlights,
+})
+
+require('fff').setup({
+  hl = {
+    normal = 'FFFNormal',
+    border = 'FFFBorder',
+    cursor = 'FFFCursor',
+    winhl = 'Normal:FFFNormal,FloatBorder:FFFBorder,FloatTitle:Title',
+  },
+})
+
+require('oil').setup()
+
+local treesitter_languages = {
+  'bash',
+  'c',
+  'css',
+  'go',
+  'html',
+  'javascript',
+  'json',
+  'lua',
+  'markdown',
+  'markdown_inline',
+  'python',
+  'query',
+  'rust',
+  'svelte',
+  'toml',
+  'tsx',
+  'typescript',
+  'vim',
+  'vimdoc',
+  'yaml',
+}
+
+require('nvim-treesitter.install').compilers = { 'zig' }
+require('nvim-treesitter').setup()
+
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    local installed = {}
+    for _, language in ipairs(require('nvim-treesitter').get_installed()) do
+      installed[language] = true
+    end
+
+    local missing = {}
+    for _, language in ipairs(treesitter_languages) do
+      if not installed[language] then
+        table.insert(missing, language)
+      end
+    end
+
+    if #missing > 0 then
+      require('nvim-treesitter').install(missing)
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = {
+    'c',
+    'css',
+    'go',
+    'html',
+    'javascript',
+    'json',
+    'jsonc',
+    'lua',
+    'markdown',
+    'python',
+    'rust',
+    'sh',
+    'svelte',
+    'toml',
+    'typescript',
+    'typescriptreact',
+    'vim',
+    'vimdoc',
+    'yaml',
+  },
+  callback = function()
+    pcall(vim.treesitter.start)
+    vim.bo.indentexpr = [[v:lua.require'nvim-treesitter'.indentexpr()]]
+  end,
+})
+
+require('treesj').setup({
+  use_default_keymaps = false,
+})
 
 vim.diagnostic.config({
-	virtual_text = true,
-	underline = true,
-	update_in_insert = false,
-	severity_sort = true,
-	float = {
-		border = "rounded",
-		source = true,
-	},
-	signs = {
-		text = {
-			[vim.diagnostic.severity.ERROR] = "",
-			[vim.diagnostic.severity.WARN] = "",
-			[vim.diagnostic.severity.INFO] = "",
-			[vim.diagnostic.severity.HINT] = "",
-		},
-	},
+  float = { source = 'always' },
+  severity_sort = true,
 })
 
--- ============================================================================
--- Native LSP Server Configurations (vim.lsp.config)
--- ============================================================================
-
--- TypeScript Tools (highly optimized alternative to vtsls)
--- Uses pmizio/typescript-tools.nvim under the hood
-require("plugins.typescript_tools").config()
-
--- Alternative: typescript-language-server (if vtsls is not available)
--- Uncomment this and comment out vtsls above if you prefer tsserver
--- vim.lsp.config["typescript-language-server"] = {
--- 	cmd = { "typescript-language-server", "--stdio" },
--- 	filetypes = {
--- 		"javascript",
--- 		"javascriptreact",
--- 		"javascript.jsx",
--- 		"typescript",
--- 		"typescriptreact",
--- 		"typescript.tsx",
--- 	},
--- 	root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
--- }
-
--- Ty Language Server for Python (Astral Type Checker)
--- Requires: ty installed: uv tool install ty
-vim.lsp.config["ty"] = {
-	cmd = { "ty", "server" },
-	filetypes = { "python" },
-	root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json", ".git", "uv.lock" },
-	settings = {},
-}
-
--- Ruff Language Server for Python (Astral Formatter/Linter)
--- Requires: ruff installed globally or via uv: uv tool install ruff
-vim.lsp.config["ruff"] = {
-	cmd = { "ruff", "server" },
-	filetypes = { "python" },
-	root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json", ".git", "uv.lock" },
-	settings = {},
-}
-
--- oxlint for TypeScript / JavaScript (fast linting)
--- Requires: oxlint installed globally or via npm: npm install -g oxlint
-vim.lsp.config["oxlint"] = {
-	cmd = { "oxlint", "--lsp" },
-	filetypes = {
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact",
-	},
-	root_markers = { "package.json", "tsconfig.json", ".git", ".oxlintrc.json" },
-	settings = {
-		run = "onSave",
-	},
-}
-
--- oxfmt for TypeScript / JavaScript (fast formatting)
--- Requires: oxfmt installed globally or via npm: npm install -g oxfmt
-vim.lsp.config["oxfmt"] = {
-	cmd = { "oxfmt", "--lsp" },
-	filetypes = {
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact",
-	},
-	root_markers = { "package.json", "tsconfig.json", ".git" },
-}
-
--- ============================================================================
--- Enable LSP Servers (vim.lsp.enable)
--- ============================================================================
-
--- Global capabilities for nvim-cmp integration
-vim.lsp.config("*", {
-	capabilities = require("cmp_nvim_lsp").default_capabilities(),
+vim.api.nvim_create_user_command("ConformDisable", function(args)
+  if args.bang then
+    vim.b.disable_autoformat = true
+  else
+    vim.g.disable_autoformat = true
+  end
+end, {
+  desc = "Disable conform-autoformat-on-save",
+  bang = true,
 })
 
-vim.lsp.enable({
-	-- "vtsls", -- Disabled in favor of typescript-tools
-	"ty",
-	"ruff",
-	"oxlint",
-	"oxfmt",
-	-- "typescript-language-server", -- Uncomment if using tsserver instead of vtsls
+vim.api.nvim_create_user_command("ConformEnable", function()
+  vim.b.disable_autoformat = false
+  vim.g.disable_autoformat = false
+end, {
+  desc = "Re-enable conform-autoformat-on-save",
 })
 
--- ============================================================================
--- Autocompletion (nvim-cmp)
--- ============================================================================
-
-require("plugins.cmp").config()
-
--- ============================================================================
--- Keymaps
--- ============================================================================
-
--- Buffer-local keymaps applied when an LSP attaches
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-	callback = function(ev)
-		local opts = { buffer = ev.buf, silent = true }
-		local map = vim.keymap.set
-
-		-- Inlay hints są domyślnie wyłączone; <leader>th przełącza je per bufor.
-		local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		if client and client:supports_method("textDocument/inlayHint") then
-			vim.lsp.inlay_hint.enable(false, { bufnr = ev.buf })
-			-- Skrót <leader>th do przełączania widoczności podpowiedzi w locie
-			map("n", "<leader>th", function()
-				vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf }), { bufnr = ev.buf })
-			end, { buffer = ev.buf, silent = true, desc = "Toggle Inlay Hints" })
-		end
-
-		-- Navigation
-		map("n", "gd", vim.lsp.buf.definition, opts)
-		map("n", "gD", vim.lsp.buf.declaration, opts)
-		map("n", "gr", vim.lsp.buf.references, opts)
-		map("n", "gi", vim.lsp.buf.implementation, opts)
-		map("n", "gy", vim.lsp.buf.type_definition, opts)
-
-		-- Information
-		map("n", "K", vim.lsp.buf.hover, opts)
-		map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-
-		-- Actions
-		map("n", "<leader>rn", vim.lsp.buf.rename, opts)
-		map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-
-		-- Diagnostics
-		map("n", "[d", vim.diagnostic.goto_prev, opts)
-		map("n", "]d", vim.diagnostic.goto_next, opts)
-		map("n", "<leader>e", vim.diagnostic.open_float, opts)
-		map("n", "<leader>q", vim.diagnostic.setloclist, opts)
-
-		-- Format
-		map("n", "<leader>f", function()
-			vim.lsp.buf.format({ async = true })
-		end, opts)
-	end,
+require('conform').setup({
+  notify_on_error = false,
+  default_format_opts = {
+    async = true,
+    timeout_ms = 500,
+    lsp_format = "fallback",
+  },
+  format_after_save = function(buffer_number)
+    if vim.g.disable_autoformat or vim.b[buffer_number].disable_autoformat then
+      return
+    end
+    return {
+      async = true,
+      timeout_ms = 500,
+      lsp_format = "fallback",
+    }
+  end,
+  formatters_by_ft = {
+    astro = { "oxfmt", "biome", "prettierd", stop_after_first = true },
+    javascript = { "oxfmt", "biome", "prettierd", stop_after_first = true },
+    typescript = { "oxfmt", "biome", "prettierd", stop_after_first = true },
+    typescriptreact = { "oxfmt", "biome", "prettierd", stop_after_first = true },
+    svelte = { "oxfmt", "prettierd", stop_after_first = true },
+    lua = { "stylua" },
+  },
+  formatters = {
+    oxfmt = {
+      condition = function(_, ctx)
+        return vim.fs.find({ ".oxfmtrc.json", ".oxfmtrc.jsonc" }, {
+          path = ctx.filename,
+          upward = true,
+          stop = vim.uv.os_homedir(),
+        })[1] ~= nil
+      end,
+    },
+    biome = {
+      condition = function(_, ctx)
+        return vim.fs.find({ "biome.json", "biome.jsonc" }, {
+          path = ctx.filename,
+          upward = true,
+          stop = vim.uv.os_homedir(),
+        })[1] ~= nil
+      end,
+    },
+    prettierd = {
+      condition = function(_, ctx)
+        return vim.fs.find({
+          ".prettierrc",
+          ".prettierrc.json",
+          ".prettierrc.js",
+          ".prettierrc.cjs",
+          ".prettierrc.mjs",
+          "prettier.config.js",
+          "prettier.config.cjs",
+          "prettier.config.mjs",
+        }, {
+          path = ctx.filename,
+          upward = true,
+          stop = vim.uv.os_homedir(),
+        })[1] ~= nil
+      end,
+    },
+  },
 })
 
--- ============================================================================
--- Auto-format on save (Neovim Native LSP)
--- ============================================================================
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(ev)
+    local function map(lhs, rhs, desc)
+      vim.keymap.set('n', lhs, rhs, { buffer = ev.buf, desc = desc })
+    end
 
-local function oxlint_fix_all(bufnr)
-	local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "oxlint" })
-	for _, client in ipairs(clients) do
-		client:request_sync("workspace/executeCommand", {
-			command = "oxc.fixAll",
-			arguments = { { uri = vim.uri_from_bufnr(bufnr) } },
-		}, 1000, bufnr)
-	end
+    map('<C-]>', vim.lsp.buf.definition, 'Go to definition')
+    map('K', vim.lsp.buf.hover, 'Hover')
+    map('gD', vim.lsp.buf.implementation, 'Go to implementation')
+    map('1gD', vim.lsp.buf.type_definition, 'Go to type definition')
+    map('gR', vim.lsp.buf.references, 'References')
+    map('g0', vim.lsp.buf.document_symbol, 'Document symbols')
+    map('gW', vim.lsp.buf.workspace_symbol, 'Workspace symbols')
+    map('gd', vim.lsp.buf.declaration, 'Go to declaration')
+    map('ga', vim.lsp.buf.code_action, 'Code action')
+    map('gr', vim.lsp.buf.rename, 'Rename')
+    map('g[', function()
+      vim.diagnostic.jump({ count = -1, float = true })
+    end, 'Previous diagnostic')
+    map('g]', function()
+      vim.diagnostic.jump({ count = 1, float = true })
+    end, 'Next diagnostic')
+    map('<leader>ft', function()
+      if vim.g.disable_autoformat or vim.b.disable_autoformat then
+        vim.cmd.ConformEnable()
+      else
+        vim.cmd.ConformDisable()
+      end
+    end, 'Toggle format on save')
+  end,
+})
+
+vim.lsp.config('biome', {
+  cmd = { 'biome', 'lsp-proxy' },
+  filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'json', 'jsonc', 'css', 'svelte', 'astro', 'vue' },
+  root_markers = { 'biome.json', 'biome.jsonc' },
+})
+
+vim.lsp.config('svelte', {
+  cmd = { 'svelteserver', '--stdio' },
+})
+
+local lsp_executables = {
+  biome = 'biome',
+  svelte = 'svelteserver',
+}
+
+local function enable_lsp_if_executable(name)
+  local config = vim.lsp.config[name]
+  if not config or not config.cmd then
+    return
+  end
+
+  local command = lsp_executables[name] or (type(config.cmd) == 'table' and config.cmd[1] or config.cmd)
+  if type(command) ~= 'string' then
+    return
+  end
+
+  if command and vim.fn.executable(command) == 1 then
+    vim.lsp.enable(name)
+  end
 end
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-	group = vim.api.nvim_create_augroup("LspFormatOnSave", {}),
-	pattern = { "*.py", "*.js", "*.ts", "*.jsx", "*.tsx" },
-	callback = function(ev)
-		local ft = vim.bo[ev.buf].filetype
-		local is_javascript = ft == "javascript" or ft == "typescript" or ft == "javascriptreact" or ft == "typescriptreact"
-		local formatter = is_javascript and "oxfmt" or "ruff"
+for _, server in ipairs({ 'biome', 'clangd', 'pyright', 'ruff', 'marksman', 'svelte', 'zls' }) do
+  enable_lsp_if_executable(server)
+end
 
-		if is_javascript then
-			oxlint_fix_all(ev.buf)
-		end
+vim.schedule(function()
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(bufnr) and vim.bo[bufnr].filetype ~= '' then
+      vim.api.nvim_exec_autocmds('FileType', { buffer = bufnr, modeline = false })
+    end
+  end
+end)
 
-		vim.lsp.buf.format({
-			async = false,
-			filter = function(client)
-				return client.name == formatter
-			end,
-		})
-	end,
+vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next search result centered' })
+vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous search result centered' })
+vim.keymap.set('n', 'J', 'mzJ`z', { desc = 'Join lines and keep cursor position' })
+
+vim.keymap.set('n', '<leader>h', function()
+  vim.o.hlsearch = not vim.o.hlsearch
+end, { desc = 'Toggle search highlight' })
+
+vim.keymap.set('n', '<leader>co', vim.cmd.copen, { desc = 'Open quickfix' })
+vim.keymap.set('n', '<leader>cl', vim.cmd.cclose, { desc = 'Close quickfix' })
+
+vim.keymap.set('n', '<leader>tw', function()
+  local view = vim.fn.winsaveview()
+  vim.cmd([[keeppatterns %s/\s\+$//e]])
+  vim.fn.winrestview(view)
+end, { desc = 'Delete trailing whitespace' })
+
+vim.keymap.set('n', '-', function()
+  require('oil').open()
+end, { desc = 'Open parent directory' })
+
+vim.keymap.set('n', 'gS', function()
+  require('treesj').split()
+end, { desc = 'Split syntax node' })
+
+vim.keymap.set('n', 'gJ', function()
+  require('treesj').join()
+end, { desc = 'Join syntax node' })
+
+vim.keymap.set('n', '<leader><leader>', function()
+  require('fff').find_files()
+end, { desc = 'FFFind files' })
+
+vim.keymap.set('n', '<leader>fg', function()
+  require('fff').live_grep()
+end, { desc = 'LiFFFe grep' })
+
+vim.keymap.set('n', '<leader>fz', function()
+  require('fff').live_grep({ grep = { modes = { 'fuzzy', 'plain' } } })
+end, { desc = 'Live fffuzy grep' })
+
+vim.keymap.set({ 'n', 'x' }, '<leader>fw', function()
+  require('fff').live_grep_under_cursor()
+end, { desc = 'Search current word / selection' })
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  callback = function()
+    vim.opt_local.textwidth = 80
+    vim.opt_local.smartindent = true
+    vim.opt_local.list = false
+    vim.opt_local.formatoptions:remove('q')
+    vim.opt_local.formatlistpat = [[^\s*\d\+\.\s\+\|^\s*[-*+]\s\+]]
+  end,
 })
 
--- ============================================================================
--- File Explorer (oil.nvim)
--- ============================================================================
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'c', 'python' },
+  callback = function()
+    vim.opt_local.expandtab = true
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+  end,
+})
 
-require("plugins.oil").config()
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'go',
+  callback = function()
+    vim.opt_local.formatoptions:append('roq')
+    vim.opt_local.expandtab = false
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.list = false
+  end,
+})
 
--- ============================================================================
--- Terminal Toggle & Resize (Ctrl + ` and Ctrl + Arrows)
--- ============================================================================
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'rust', 'yaml' },
+  callback = function()
+    vim.opt_local.list = false
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'yaml',
+  callback = function()
+    vim.opt_local.number = true
+    vim.opt_local.colorcolumn = '0'
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'sql',
+  callback = function()
+    vim.opt_local.commentstring = '-- %s'
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'qf',
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.cmd(math.max(math.min(vim.fn.line('$'), 10), 3) .. 'wincmd _')
+  end,
+})
+
+local function get_nushell_shell()
+  local resolved = vim.fn.exepath("nu")
+  if resolved ~= "" then
+    return '"' .. resolved .. '"'
+  end
+  return "nu"
+end
+
+local nushell_options = {
+  shell = get_nushell_shell(),
+  shellcmdflag = "--login --stdin --no-newline -c",
+  shelltemp = false,
+  shellredir = "out+err> %s",
+  shellpipe = "| complete | update stderr { ansi strip } | tee { get stderr | save --force --raw %s } | into record",
+  shellquote = "",
+  shellxquote = "",
+}
+
+for option, value in pairs(nushell_options) do
+  vim.opt[option] = value
+end
 
 local term_buf = nil
 local term_win = nil
 
 local function toggle_terminal()
-	if term_win and vim.api.nvim_win_is_valid(term_win) then
-		vim.api.nvim_win_close(term_win, true)
-		term_win = nil
-	else
-		-- Otwórz poziomy podział (split) na dole o wysokości 15 linii
-		vim.cmd("botright 15split")
-		term_win = vim.api.nvim_get_current_win()
-		
-		if term_buf and vim.api.nvim_buf_is_valid(term_buf) then
-			-- Przywróć istniejący bufor terminala
-			vim.api.nvim_win_set_buf(term_win, term_buf)
-		else
-			-- Utwórz nowy terminal
-			vim.cmd("terminal")
-			term_buf = vim.api.nvim_get_current_buf()
-			
-			-- Ukryj numery linii i kolumnę znaków w terminalu
-			vim.opt_local.number = false
-			vim.opt_local.relativenumber = false
-			vim.opt_local.signcolumn = "no"
-		end
-		
-		-- Automatycznie wejdź w tryb insert w terminalu
-		vim.cmd("startinsert")
-	end
+  if term_win and vim.api.nvim_win_is_valid(term_win) then
+    vim.api.nvim_win_close(term_win, true)
+    term_win = nil
+  else
+    -- Otwórz poziomy podział (split) na dole o wysokości 15 linii
+    vim.cmd("botright 15split")
+    term_win = vim.api.nvim_get_current_win()
+    
+    if term_buf and vim.api.nvim_buf_is_valid(term_buf) then
+      -- Przywróć istniejący bufor terminala
+      vim.api.nvim_win_set_buf(term_win, term_buf)
+    else
+      -- Utwórz nowy terminal
+      vim.cmd("terminal")
+      term_buf = vim.api.nvim_get_current_buf()
+      
+      -- Ukryj numery linii i kolumnę znaków w terminalu
+      vim.opt_local.number = false
+      vim.opt_local.relativenumber = false
+      vim.opt_local.signcolumn = "no"
+    end
+    
+    -- Automatycznie wejdź w tryb insert w terminalu
+    vim.cmd("startinsert")
+  end
 end
 
 -- Skrót Ctrl + ` (backtick) do otwierania/zamykania terminala (w trybie Normal i Terminal)
@@ -340,9 +543,3 @@ vim.keymap.set("n", "<C-Up>", ":resize +2<CR>", { silent = true, desc = "Increas
 vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { silent = true, desc = "Decrease window height" })
 vim.keymap.set("t", "<C-Up>", "<C-\\><C-n>:resize +2<CR>i", { silent = true, desc = "Increase window height" })
 vim.keymap.set("t", "<C-Down>", "<C-\\><C-n>:resize -2<CR>i", { silent = true, desc = "Decrease window height" })
-
--- ============================================================================
--- Statusline (lualine.nvim)
--- ============================================================================
-
-require("plugins.lualine").config()

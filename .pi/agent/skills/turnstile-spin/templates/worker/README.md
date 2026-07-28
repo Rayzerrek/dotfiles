@@ -27,12 +27,12 @@ curl -sf https://<your-worker-url>/health
 
 ## Endpoints
 
-| Method | Path           | Purpose                                                                |
-| ------ | -------------- | ---------------------------------------------------------------------- |
-| POST   | `/`            | Siteverify proxy. Accepts JSON or form-encoded body.                   |
-| POST   | `/siteverify`  | Alias of `POST /`.                                                     |
-| GET    | `/health`      | Health check. Returns `{"ok": true, "version": "..."}`.                |
-| GET    | `/`            | Same as `/health`.                                                     |
+| Method | Path          | Purpose                                                 |
+| ------ | ------------- | ------------------------------------------------------- |
+| POST   | `/`           | Siteverify proxy. Accepts JSON or form-encoded body.    |
+| POST   | `/siteverify` | Alias of `POST /`.                                      |
+| GET    | `/health`     | Health check. Returns `{"ok": true, "version": "..."}`. |
+| GET    | `/`           | Same as `/health`.                                      |
 
 ### Request
 
@@ -40,9 +40,9 @@ JSON body:
 
 ```json
 {
-	"token": "TURNSTILE_TOKEN_FROM_WIDGET",
-	"remoteip": "1.2.3.4",
-	"idempotency_key": "optional-uuid"
+  "token": "TURNSTILE_TOKEN_FROM_WIDGET",
+  "remoteip": "1.2.3.4",
+  "idempotency_key": "optional-uuid"
 }
 ```
 
@@ -58,15 +58,15 @@ token=...&remoteip=1.2.3.4
 
 ```json
 {
-	"success": true,
-	"challenge_ts": "2026-05-29T12:00:00Z",
-	"hostname": "example.com",
-	"action": "turnstile-spin-v1",
-	"error-codes": [],
-	"_worker": {
-		"duration_ms": 87,
-		"worker_version": "1.0.0"
-	}
+  "success": true,
+  "challenge_ts": "2026-05-29T12:00:00Z",
+  "hostname": "example.com",
+  "action": "turnstile-spin-v1",
+  "error-codes": [],
+  "_worker": {
+    "duration_ms": 87,
+    "worker_version": "1.0.0"
+  }
 }
 ```
 
@@ -74,28 +74,28 @@ On validation failure, `success` is `false` and `error-codes` lists the reasons.
 
 #### Error codes
 
-| Code                       | Meaning                                                             |
-| -------------------------- | ------------------------------------------------------------------- |
-| `missing-input-secret`     | `TURNSTILE_SECRET_KEY` not set                                      |
-| `invalid-input-secret`     | Secret rejected by upstream                                         |
-| `missing-token`            | No token in the request body                                        |
-| `invalid-input-response`   | Token rejected by upstream                                          |
-| `timeout-or-duplicate`     | Token expired (>5min) or already validated                          |
-| `invalid-content-type`     | Body content-type was not JSON or form-encoded                      |
-| `upstream-unreachable`     | Could not reach `challenges.cloudflare.com`                         |
-| `upstream-timeout`         | Upstream took longer than 5 seconds                                 |
-| `hostname-mismatch`        | `EXPECTED_HOSTNAME` is set and the response hostname did not match  |
-| `bad-request`              | Generic catch-all for malformed input                               |
-| `internal-error`           | Unhandled error in the Worker                                       |
+| Code                     | Meaning                                                            |
+| ------------------------ | ------------------------------------------------------------------ |
+| `missing-input-secret`   | `TURNSTILE_SECRET_KEY` not set                                     |
+| `invalid-input-secret`   | Secret rejected by upstream                                        |
+| `missing-token`          | No token in the request body                                       |
+| `invalid-input-response` | Token rejected by upstream                                         |
+| `timeout-or-duplicate`   | Token expired (>5min) or already validated                         |
+| `invalid-content-type`   | Body content-type was not JSON or form-encoded                     |
+| `upstream-unreachable`   | Could not reach `challenges.cloudflare.com`                        |
+| `upstream-timeout`       | Upstream took longer than 5 seconds                                |
+| `hostname-mismatch`      | `EXPECTED_HOSTNAME` is set and the response hostname did not match |
+| `bad-request`            | Generic catch-all for malformed input                              |
+| `internal-error`         | Unhandled error in the Worker                                      |
 
 ## Configuration
 
-| Variable                | Type    | Default   | Purpose                                                             |
-| ----------------------- | ------- | --------- | ------------------------------------------------------------------- |
-| `TURNSTILE_SECRET_KEY`  | secret  | (required)| Widget secret. Set via `wrangler secret put TURNSTILE_SECRET_KEY`.  |
-| `ALLOWED_ORIGIN`        | var     | `*`       | CORS allowed origin. Lock down to your customer-facing domain.      |
-| `EXPECTED_HOSTNAME`     | var     | (unset)   | If set, reject siteverify responses where `hostname` differs.       |
-| `LOG_LEVEL`             | var     | `info`    | One of `debug`, `info`, `warn`, `error`. Filters structured logs.   |
+| Variable               | Type   | Default    | Purpose                                                            |
+| ---------------------- | ------ | ---------- | ------------------------------------------------------------------ |
+| `TURNSTILE_SECRET_KEY` | secret | (required) | Widget secret. Set via `wrangler secret put TURNSTILE_SECRET_KEY`. |
+| `ALLOWED_ORIGIN`       | var    | `*`        | CORS allowed origin. Lock down to your customer-facing domain.     |
+| `EXPECTED_HOSTNAME`    | var    | (unset)    | If set, reject siteverify responses where `hostname` differs.      |
+| `LOG_LEVEL`            | var    | `info`     | One of `debug`, `info`, `warn`, `error`. Filters structured logs.  |
 
 Set vars in `wrangler.toml` (`[vars]` block) or via `wrangler deploy --var KEY:value`. Secrets only via `wrangler secret put`.
 
@@ -105,19 +105,19 @@ The minimum HTML that works against this Worker:
 
 ```html
 <script
-	src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-	async
-	defer
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+  async
+  defer
 ></script>
 
 <form action="https://YOUR_WORKER_URL/" method="POST">
-	<input name="email" type="email" required />
-	<div
-		class="cf-turnstile"
-		data-sitekey="YOUR_SITEKEY"
-		data-action="turnstile-spin-v1"
-	></div>
-	<button type="submit">Submit</button>
+  <input name="email" type="email" required />
+  <div
+    class="cf-turnstile"
+    data-sitekey="YOUR_SITEKEY"
+    data-action="turnstile-spin-v1"
+  ></div>
+  <button type="submit">Submit</button>
 </form>
 ```
 
@@ -129,13 +129,13 @@ For React, SvelteKit, Astro, Hugo, and other framework examples, see [`developer
 
 After the first deploy, before pointing real traffic:
 
-| Step                                                           | Why                                                                 |
-| -------------------------------------------------------------- | ------------------------------------------------------------------- |
-| Set `ALLOWED_ORIGIN` to your real domain in `wrangler.toml`    | Locks CORS so other sites cannot proxy through your Worker          |
-| Set `EXPECTED_HOSTNAME` if your widget is single-domain        | Defends against cross-site token replay                             |
-| Configure Workers Observability alerts on error rate > 1%      | Catches upstream outages or secret-misconfig events                 |
-| Rotate `TURNSTILE_SECRET_KEY` periodically                     | Standard secret hygiene                                             |
-| Add a [Workers rate limit](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/) if abuse warrants | Defends the Worker itself                       |
+| Step                                                                                                                      | Why                                                        |
+| ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Set `ALLOWED_ORIGIN` to your real domain in `wrangler.toml`                                                               | Locks CORS so other sites cannot proxy through your Worker |
+| Set `EXPECTED_HOSTNAME` if your widget is single-domain                                                                   | Defends against cross-site token replay                    |
+| Configure Workers Observability alerts on error rate > 1%                                                                 | Catches upstream outages or secret-misconfig events        |
+| Rotate `TURNSTILE_SECRET_KEY` periodically                                                                                | Standard secret hygiene                                    |
+| Add a [Workers rate limit](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/) if abuse warrants | Defends the Worker itself                                  |
 
 ## Testing
 
@@ -148,11 +148,11 @@ npm run openapi:lint
 
 Cloudflare's documented test secrets:
 
-| Secret                                  | Behavior                                  |
-| --------------------------------------- | ----------------------------------------- |
-| `1x0000000000000000000000000000000AA`   | Always succeeds                           |
-| `2x0000000000000000000000000000000AA`   | Always fails                              |
-| `3x0000000000000000000000000000000AA`   | Returns `timeout-or-duplicate`            |
+| Secret                                | Behavior                       |
+| ------------------------------------- | ------------------------------ |
+| `1x0000000000000000000000000000000AA` | Always succeeds                |
+| `2x0000000000000000000000000000000AA` | Always fails                   |
+| `3x0000000000000000000000000000000AA` | Returns `timeout-or-duplicate` |
 
 ## Project layout
 

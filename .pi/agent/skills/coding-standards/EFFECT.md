@@ -56,13 +56,15 @@ Expected failures belong in Effect's typed error channel. Do not convert ordinar
 Use the local established tagged-error mechanism:
 
 ```ts
-class UserNotFound extends Schema.TaggedErrorClass<UserNotFound>()("UserNotFound", {
-  userId: UserIdSchema,
-}) {}
+class UserNotFound extends Schema.TaggedErrorClass<UserNotFound>()(
+  "UserNotFound",
+  {
+    userId: UserIdSchema,
+  },
+) {}
 ```
 
 Keep error unions precise at module boundaries. Broad app-level failures belong near orchestration, rendering, logging, and entrypoints.
-
 
 ## Schema and parsing
 

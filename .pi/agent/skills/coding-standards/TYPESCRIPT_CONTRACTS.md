@@ -139,7 +139,10 @@ const usersById = users.reduce<Record<UserId, User>>(
 Prefer mutating the local accumulator:
 
 ```ts
-function indexUserById(acc: Record<UserId, User>, user: User): Record<UserId, User> {
+function indexUserById(
+  acc: Record<UserId, User>,
+  user: User,
+): Record<UserId, User> {
   acc[user.id] = user;
   return acc;
 }

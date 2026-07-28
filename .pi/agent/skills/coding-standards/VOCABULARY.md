@@ -12,7 +12,6 @@ Use these exact terms in explanations, reviews, and code-facing design notes whe
 
 **Precise Error Union** — The explicit set of Expected Failures a function can return, kept narrow enough that callers can handle cases semantically.
 
-
 ## Boundary language
 
 **Unknown Boundary Input** — Untrusted or less-structured input represented as `unknown` or a boundary DTO until a parser refines it: HTTP bodies, JSON, queue payloads, storage rows, env vars, RPC payloads, third-party responses.

@@ -29,13 +29,13 @@ Common failure modes and operational behavior. For limits, recommendations, and 
 
 ## PySpark / Iceberg
 
-| Issue | Fix |
-|-------|-----|
-| Catalog auth fails | Add header `X-Iceberg-Access-Delegation: vended-credentials` |
-| `NoAuthWithAWSException` on orphan removal | Supply S3 access/secret keys (vended creds don't work here) |
-| Version mismatch | Use Iceberg `1.6.1` |
-| Slow first run (~30–60s) | JAR download; cached after |
-| Remote signing errors | Set `s3.remote-signing-enabled=false` |
+| Issue                                      | Fix                                                          |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| Catalog auth fails                         | Add header `X-Iceberg-Access-Delegation: vended-credentials` |
+| `NoAuthWithAWSException` on orphan removal | Supply S3 access/secret keys (vended creds don't work here)  |
+| Version mismatch                           | Use Iceberg `1.6.1`                                          |
+| Slow first run (~30–60s)                   | JAR download; cached after                                   |
+| Remote signing errors                      | Set `s3.remote-signing-enabled=false`                        |
 
 ## Nested Namespaces
 

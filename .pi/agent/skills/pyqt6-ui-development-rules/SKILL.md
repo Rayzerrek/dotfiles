@@ -9,7 +9,7 @@ model: sonnet
 invoked_by: both
 user_invocable: true
 tools: [Read, Write, Edit, Bash, Glob, Grep]
-globs: ['**/gui/**/*.*', '**/*_ui.py', '**/*_dialog.py', '**/*_window.py']
+globs: ["**/gui/**/*.*", "**/*_ui.py", "**/*_dialog.py", "**/*_window.py"]
 best_practices:
   - Use Qt signal/slot mechanism for all UI-to-logic communication
   - Never block the main thread with long-running operations
@@ -19,7 +19,7 @@ best_practices:
 error_handling: graceful
 streaming: supported
 verified: true
-lastVerifiedAt: '2026-03-01'
+lastVerifiedAt: "2026-03-01"
 source: builtin
 trust_score: 100
 provenance_sha: aab9454f75a64219

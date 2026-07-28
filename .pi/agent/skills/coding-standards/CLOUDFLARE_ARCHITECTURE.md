@@ -2,7 +2,6 @@
 
 Cloudflare platform objects are infrastructure. Keep raw bindings at composition seams, cross runtime hops with explicit DTOs/context, and make stateful objects own coordination rather than accidental global compute.
 
-
 ## Vocabulary
 
 **Cloudflare Composition Seam** — The outer Worker/DO/Agent/composition location where raw `Env`, execution context, and bindings become app-level dependencies.
@@ -61,7 +60,9 @@ Service-facing interfaces should look like:
 
 ```ts
 type EmailJobs = {
-  enqueueWelcomeEmail(input: WelcomeEmailJob): Promise<Result<void, EmailQueueUnavailable>>;
+  enqueueWelcomeEmail(
+    input: WelcomeEmailJob,
+  ): Promise<Result<void, EmailQueueUnavailable>>;
 };
 ```
 

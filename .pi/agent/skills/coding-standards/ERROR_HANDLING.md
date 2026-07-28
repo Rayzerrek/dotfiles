@@ -47,7 +47,9 @@ type Result<T, E extends Error> =
 Prefer:
 
 ```ts
-function findUser(id: UserId): Promise<Result<User, UserNotFound | UserStoreUnavailable>>;
+function findUser(
+  id: UserId,
+): Promise<Result<User, UserNotFound | UserStoreUnavailable>>;
 ```
 
 Avoid:
@@ -131,13 +133,13 @@ Avoid public contracts made of raw strings, context-free `Error`, or unstructure
 Prefer:
 
 ```ts
-Result<User, UserNotFound | UserStoreUnavailable>
+Result<User, UserNotFound | UserStoreUnavailable>;
 ```
 
 Avoid:
 
 ```ts
-Result<User, AppError>
+Result<User, AppError>;
 ```
 
 A broad error type hides caller decisions: retry, render not-found, ask for auth, stop workflow, compensate, or report dependency outage.
@@ -172,7 +174,13 @@ try {
     return err(new RequestCancelled({ operation: "fetchUser", cause }));
   }
 
-  return err(new HttpRequestFailed({ operation: "fetchUser", provider: "users-api", cause }));
+  return err(
+    new HttpRequestFailed({
+      operation: "fetchUser",
+      provider: "users-api",
+      cause,
+    }),
+  );
 }
 ```
 

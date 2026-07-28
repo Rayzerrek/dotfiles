@@ -1,10 +1,10 @@
 [
-    {
-        "key": "shift+enter",
-        "command": "workbench.action.terminal.sendSequence",
-        "when": "terminalFocus",
-        "args": {
-            "text": "\u001b\r"
-        }
+  {
+    "key": "shift+enter",
+    "command": "workbench.action.terminal.sendSequence",
+    "when": "terminalFocus",
+    "args": {
+      "text": "\u001b\r"
     }
+  }
 ]

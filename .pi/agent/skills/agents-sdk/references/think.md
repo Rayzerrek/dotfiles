@@ -17,7 +17,9 @@ import { routeAgentRequest } from "agents";
 
 export class MyAgent extends Think<Env> {
   getModel() {
-    return createWorkersAI({ binding: this.env.AI })("@cf/meta/llama-4-scout-17b-16e-instruct");
+    return createWorkersAI({ binding: this.env.AI })(
+      "@cf/meta/llama-4-scout-17b-16e-instruct",
+    );
   }
 
   getSystemPrompt() {
@@ -26,7 +28,7 @@ export class MyAgent extends Think<Env> {
 }
 
 export default {
-  fetch: (req, env) => routeAgentRequest(req, env)
+  fetch: (req, env) => routeAgentRequest(req, env),
 };
 ```
 
@@ -36,10 +38,10 @@ export default {
 {
   "compatibility_flags": ["nodejs_compat", "experimental"],
   "durable_objects": {
-    "bindings": [{ "name": "MyAgent", "class_name": "MyAgent" }]
+    "bindings": [{ "name": "MyAgent", "class_name": "MyAgent" }],
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["MyAgent"] }],
-  "ai": { "binding": "AI" }
+  "ai": { "binding": "AI" },
 }
 ```
 
@@ -57,8 +59,8 @@ export class MyAgent extends Think<Env> {
       getWeather: tool({
         description: "Get weather",
         parameters: z.object({ city: z.string() }),
-        execute: async ({ city }) => `72°F in ${city}`
-      })
+        execute: async ({ city }) => `72°F in ${city}`,
+      }),
     };
   }
 }
@@ -66,13 +68,13 @@ export class MyAgent extends Think<Env> {
 
 ## Lifecycle Hooks
 
-| Hook | When | Use for |
-|------|------|---------|
-| `configureSession()` | Agent starts | Set up memory, context providers |
-| `beforeTurn(ctx)` | Before each LLM call | Per-turn model/tools/system prompt; return `TurnConfig` |
-| `onChunk(chunk)` | Each streaming chunk | Progress tracking |
-| `onChatResponse(result)` | After LLM turn completes | Chaining, follow-up `saveMessages` |
-| `onChatError(error)` | On LLM error | Error handling |
+| Hook                     | When                     | Use for                                                 |
+| ------------------------ | ------------------------ | ------------------------------------------------------- |
+| `configureSession()`     | Agent starts             | Set up memory, context providers                        |
+| `beforeTurn(ctx)`        | Before each LLM call     | Per-turn model/tools/system prompt; return `TurnConfig` |
+| `onChunk(chunk)`         | Each streaming chunk     | Progress tracking                                       |
+| `onChatResponse(result)` | After LLM turn completes | Chaining, follow-up `saveMessages`                      |
+| `onChatError(error)`     | On LLM error             | Error handling                                          |
 
 ```typescript
 async beforeTurn(ctx: TurnContext): Promise<TurnConfig> {
@@ -98,15 +100,17 @@ Same React hooks as `AIChatAgent`:
 
 ```tsx
 const agent = useAgent({ agent: "MyAgent", name: "session-1" });
-const { messages, input, handleInputChange, handleSubmit } = useAgentChat({ agent });
+const { messages, input, handleInputChange, handleSubmit } = useAgentChat({
+  agent,
+});
 ```
 
 ## Think vs AIChatAgent
 
-| | Think | AIChatAgent |
-|-|-------|-------------|
-| `streamText` loop | Built-in | You write it |
-| Tool execution | Automatic | You wire it |
-| Customization | Override hooks | Full control in `onChatMessage` |
-| Built-in tools | Workspace, execute, browser | None |
-| Compatibility flag | Requires `experimental` | Standard |
+|                    | Think                       | AIChatAgent                     |
+| ------------------ | --------------------------- | ------------------------------- |
+| `streamText` loop  | Built-in                    | You write it                    |
+| Tool execution     | Automatic                   | You wire it                     |
+| Customization      | Override hooks              | Full control in `onChatMessage` |
+| Built-in tools     | Workspace, execute, browser | None                            |
+| Compatibility flag | Requires `experimental`     | Standard                        |

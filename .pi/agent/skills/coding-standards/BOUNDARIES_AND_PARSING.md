@@ -45,7 +45,9 @@ Parser failure shape follows the repository's error-handling convention. A parse
 Prefer:
 
 ```ts
-async function handle(body: unknown): Promise<Result<Response, CreateUserError>> {
+async function handle(
+  body: unknown,
+): Promise<Result<Response, CreateUserError>> {
   const input = CreateUserInput.parse(body);
   if (input._tag === "err") {
     return input;
@@ -76,7 +78,7 @@ Avoid:
 
 ```ts
 const input = JSON.parse(text) as CreateUserInput;
-const user = await response.json() as User;
+const user = (await response.json()) as User;
 const row = record as Invoice;
 ```
 
@@ -127,7 +129,9 @@ Treat inferred storage DTOs as infrastructure facts, not domain proof:
 ```ts
 type InvoiceRow = typeof invoices.$inferSelect;
 
-function parseInvoiceRow(row: InvoiceRow): Result<Invoice, InvalidStoredInvoice> {
+function parseInvoiceRow(
+  row: InvoiceRow,
+): Result<Invoice, InvalidStoredInvoice> {
   // reject impossible combinations; reconstruct domain values
 }
 ```

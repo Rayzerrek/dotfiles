@@ -82,7 +82,7 @@ Avoid:
 
 ```ts
 items.map(processItem); // floating promises
-void sendEmail(user);   // unowned detached work
+void sendEmail(user); // unowned detached work
 ```
 
 Detached work goes through the runtime/project mechanism:
@@ -129,7 +129,11 @@ Small known-size collections can use `Promise.allSettled`. Unbounded or user/dat
 Prefer one shared primitive:
 
 ```ts
-await mapConcurrentBounded(users, { concurrency: emailProviderConcurrency }, sendEmail);
+await mapConcurrentBounded(
+  users,
+  { concurrency: emailProviderConcurrency },
+  sendEmail,
+);
 ```
 
 Avoid magic limits:

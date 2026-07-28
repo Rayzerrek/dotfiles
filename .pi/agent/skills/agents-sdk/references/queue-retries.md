@@ -10,11 +10,18 @@ FIFO queue persisted in SQLite. Sequential processing, one item at a time.
 export class MyAgent extends Agent<Env, State> {
   async onRequest(request: Request) {
     this.queue("processItem", { id: "abc", data: "..." });
-    this.queue("processItem", { id: "def", data: "..." }, { retry: { maxAttempts: 5 } });
+    this.queue(
+      "processItem",
+      { id: "def", data: "..." },
+      { retry: { maxAttempts: 5 } },
+    );
     return new Response("Queued");
   }
 
-  async processItem(payload: { id: string; data: string }, queueItem: QueueItem) {
+  async processItem(
+    payload: { id: string; data: string },
+    queueItem: QueueItem,
+  ) {
     await doWork(payload);
   }
 }
@@ -49,8 +56,8 @@ const result = await this.retry(
       if (err.message.includes("429")) return true;
       if (err.message.includes("401")) return false;
       return nextAttempt <= 3;
-    }
-  }
+    },
+  },
 );
 ```
 
@@ -67,7 +74,7 @@ this.queue("handler", payload, { retry: { maxAttempts: 5 } });
 ```typescript
 export class MyAgent extends Agent<Env, State> {
   static options = {
-    retry: { maxAttempts: 5, baseDelayMs: 200, maxDelayMs: 10000 }
+    retry: { maxAttempts: 5, baseDelayMs: 200, maxDelayMs: 10000 },
   };
 }
 ```

@@ -5,24 +5,24 @@ For static sites or any project without a JS framework. The form posts directly 
 ```html
 <!doctype html>
 <html>
-	<head>
-		<script
-			src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-			async
-			defer
-		></script>
-	</head>
-	<body>
-		<form action="https://YOUR_WORKER_URL/" method="POST">
-			<input name="email" type="email" required />
-			<div
-				class="cf-turnstile"
-				data-sitekey="YOUR_SITEKEY"
-				data-action="turnstile-spin-v1"
-			></div>
-			<button type="submit">Subscribe</button>
-		</form>
-	</body>
+  <head>
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    ></script>
+  </head>
+  <body>
+    <form action="https://YOUR_WORKER_URL/" method="POST">
+      <input name="email" type="email" required />
+      <div
+        class="cf-turnstile"
+        data-sitekey="YOUR_SITEKEY"
+        data-action="turnstile-spin-v1"
+      ></div>
+      <button type="submit">Subscribe</button>
+    </form>
+  </body>
 </html>
 ```
 
@@ -35,10 +35,10 @@ When the form is submitted, the browser includes `cf-turnstile-response` automat
 
 ## Substitutions
 
-| Placeholder        | Replace with                                            |
-| ------------------ | ------------------------------------------------------- |
-| `YOUR_WORKER_URL`  | The deployed Worker URL from Step 5                     |
-| `YOUR_SITEKEY`     | The widget site key from Step 4                         |
+| Placeholder       | Replace with                        |
+| ----------------- | ----------------------------------- |
+| `YOUR_WORKER_URL` | The deployed Worker URL from Step 5 |
+| `YOUR_SITEKEY`    | The widget site key from Step 4     |
 
 ## Variant: AJAX submit instead of form action
 
@@ -46,17 +46,17 @@ If the form is submitted via `fetch` instead of a native form post, the snippet 
 
 ```html
 <script>
-	document.querySelector("form").addEventListener("submit", async (e) => {
-		e.preventDefault();
-		const data = new FormData(e.target);
-		const res = await fetch("https://YOUR_WORKER_URL/", {
-			method: "POST",
-			body: data,
-		});
-		const json = await res.json();
-		if (json.success) {
-			// proceed
-		}
-	});
+  document.querySelector("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const res = await fetch("https://YOUR_WORKER_URL/", {
+      method: "POST",
+      body: data,
+    });
+    const json = await res.json();
+    if (json.success) {
+      // proceed
+    }
+  });
 </script>
 ```
