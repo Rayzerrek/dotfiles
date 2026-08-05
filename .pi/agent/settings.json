@@ -1,17 +1,18 @@
 {
-  "defaultModel": "minimax-m3",
-  "defaultProvider": "opencode-go",
-  "defaultThinkingLevel": "medium",
-  "lastChangelogVersion": "0.82.1",
+  "defaultModel": "deepseek-v4-flash-free",
+  "defaultProvider": "opencode",
+  "defaultThinkingLevel": "high",
+  "lastChangelogVersion": "0.83.0",
   "packages": [
     "npm:pi-web-access",
     {
       "source": "npm:@plannotator/pi-extension",
       "skills": []
     },
-    "npm:pi-commandcode-provider"
+    "npm:pi-commandcode-provider",
+    "npm:@raunak07/pi-statusline"
   ],
-  "theme": "vesper",
+  "theme": "amp",
   "enableSkillCommands": true,
   "compaction": {
     "enabled": true
@@ -51,6 +52,22 @@
     "commandcode/stepfun/Step-3.7-Flash",
     "commandcode/nvidia/nemotron-3-ultra-550b-a55b",
     "commandcode/poolside/laguna-s-2.1-free",
-    "commandcode/inclusionai/ling-3.0-flash-free"
+    "commandcode/inclusionai/ling-3.0-flash-free",
+    "opencode-go/kimi-k3",
+    "opencode-go/mimo-v2.5-pro",
+    "opencode-go/gpt-5.6-luna",
+    "opencode-go/qwen3.8-max",
+    "opencode-go/grok-4.5",
+    "opencode-go/kimi-k2.7-code",
+    "opencode-go/hy3",
+    "opencode-go/glm-5.2",
+    "opencode-go/deepseek-v4-flash",
+    "opencode-go/deepseek-v4-pro",
+    "opencode-go/minimax-m3",
+    "opencode/longcat-2.0-free",
+    "opencode/nemotron-3-ultra-free",
+    "opencode/ling-3.0-flash-free",
+    "opencode/laguna-s-2.1-free",
+    "opencode/deepseek-v4-flash-free"
   ]
 }

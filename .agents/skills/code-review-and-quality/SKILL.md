@@ -1,347 +1,160 @@
 ---
 name: code-review-and-quality
-description: Conducts multi-axis code review. Use before merging any change. Use when reviewing code written by yourself, another agent, or a human. Use when you need to assess code quality across multiple dimensions before it enters the main branch.
+description: Reviews a change on two independent axes — whether it follows the documented coding standards (Standards) and whether it implements what the originating spec asked for (Spec). Reports each axis separately so one does not mask the other. Use before merging any change, or when the user asks to review "since X", a PR, a working-tree diff, or "review my change". Carries a fixed code-smell baseline and skips tooling-enforced noise.
 ---
 
-# Code Review and Quality
+# Code Review & Quality
 
-## Overview
+Review a change on **two independent axes**, reported separately so one cannot mask the other. Review-only: do not edit files, apply patches, or "fix as you go" unless the user explicitly asks after the review.
 
-Multi-dimensional code review with quality gates. Every change gets reviewed before merge — no exceptions. Review covers five axes: correctness, readability, architecture, security, and performance.
+A change can pass one axis and fail the other:
 
-**The approval standard:** Approve a change when it definitely improves overall code health, even if it isn't perfect. Perfect code doesn't exist — the goal is continuous improvement. Don't block a change because it isn't exactly how you would have written it. If it improves the codebase and follows the project's conventions, approve it.
+- Code that follows every documented standard but implements the wrong thing → **Standards pass, Spec fail.**
+- Code that does exactly what the issue asked but breaks project conventions → **Spec pass, Standards fail.**
 
-## When to Use
+Reporting them apart stops one axis from burying the other.
 
-- Before merging any PR or change
-- After completing a feature implementation
-- When another agent or model produced code you need to evaluate
-- When refactoring existing code
-- After any bug fix (review both the fix and the regression test)
+## 1. Pin the fixed point
 
-## The Five-Axis Review
+Use the user's explicit target when given: files, commit range, branch, tag, PR, staged/unstaged scope.
 
-Every review evaluates code across these dimensions:
+Otherwise detect it, in order:
 
-### 1. Correctness
+1. If the working tree has staged or unstaged changes, review the working-tree diff.
+2. Else if the current branch has a merge base with `main`, `master`, or its upstream, review the branch diff.
+3. Else ask one question to pin the target.
 
-Does the code do what it claims to do?
+Record the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base) and the commit list `git log <fixed-point>..HEAD --oneline`. Confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here, not mid-review.
 
-- Does it match the spec or task requirements?
-- Are edge cases handled (null, empty, boundary values)?
-- Are error paths handled (not just the happy path)?
-- Does it pass all tests? Are the tests actually testing the right things?
-- Are there off-by-one errors, race conditions, or state inconsistencies?
+State the selected target before reviewing.
 
-### 2. Readability & Simplicity
+## 2. Identify the spec and the standards
 
-Can another engineer (or agent) understand this code without the author explaining it?
+Find the originating spec, in order:
 
-- Are names descriptive and consistent with project conventions? (No `temp`, `data`, `result` without context)
-- Is the control flow straightforward (avoid nested ternaries, deep callbacks)?
-- Is the code organized logically (related code grouped, clear module boundaries)?
-- Are there any "clever" tricks that should be simplified?
-- **Could this be done in fewer lines?** (1000 lines where 100 suffice is a failure)
-- **Are abstractions earning their complexity?** (Don't generalize until the third use case)
-- Would comments help clarify non-obvious intent? (But don't comment obvious code.)
-- Are there dead code artifacts: no-op variables (`_unused`), backwards-compat shims, or `// removed` comments?
+1. Issue/PR references in the commit messages (`#123`, `Closes #45`, GitLab `!67`).
+2. A path the user passed as an argument.
+3. A spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
+4. If nothing is found, ask the user where the spec is. If there is none, the **Spec** axis reports "no spec available" and is skipped.
 
-### 3. Architecture
+Identify the standards sources: whatever the repo documents about how code should be written (`CODING_STANDARDS.md`, `CONTRIBUTING.md`, `AGENTS.md`, architecture docs). On top of whatever the repo documents, the Standards axis always carries the smell baseline in §5.
 
-Does the change fit the system's design?
+Read the diff in full files, not just isolated hunks — code that looks wrong in isolation may be correct given surrounding logic.
 
-- Does it follow existing patterns or introduce a new one? If new, is it justified?
-- Does it maintain clean module boundaries?
-- Is there code duplication that should be shared?
-- Are dependencies flowing in the right direction (no circular dependencies)?
-- Is the abstraction level appropriate (not over-engineered, not too coupled)?
+## 3. Run both reviews
 
-### 4. Security
+Review fully on each axis, then report them separately. Do **not** merge or rerank findings across axes — the separation is the point.
 
-For detailed security guidance, see `security-and-hardening`. Does the change introduce vulnerabilities?
+### Standards axis
 
-- Is user input validated and sanitized?
-- Are secrets kept out of code, logs, and version control?
-- Is authentication/authorization checked where needed?
-- Are SQL queries parameterized (no string concatenation)?
-- Are outputs encoded to prevent XSS?
-- Are dependencies from trusted sources with no known vulnerabilities?
-- Is data from external sources (APIs, logs, user content, config files) treated as untrusted?
-- Are external data flows validated at system boundaries before use in logic or rendering?
+For each hunk: (a) every place the diff violates a documented standard (cite the source + the rule); (b) any baseline smell you spot (name it and quote the hunk).
 
-### 5. Performance
+A documented repo standard overrides the baseline: where the repo endorses something a smell would flag, suppress the smell. Each smell is a labelled heuristic ("possible Feature Envy"), never a hard violation. Run the repo's typecheck and lint first (`npx tsc --noEmit`, `npx eslint`, the project's own check) and skip everything tooling already enforces — findings are only about what the tools cannot see.
 
-For detailed profiling and optimization, see `performance-optimization`. Does the change introduce performance problems?
+### Spec axis
 
-- Any N+1 query patterns?
-- Any unbounded loops or unconstrained data fetching?
-- Any synchronous operations that should be async?
-- Any unnecessary re-renders in UI components?
-- Any missing pagination on list endpoints?
-- Any large objects created in hot paths?
+Report: (a) requirements the spec asked for that are missing or partial; (b) behavior in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding.
 
-## Change Sizing
+## 4. Proof for every finding
 
-Small, focused changes are easier to review, faster to merge, and safer to deploy. Target these sizes:
+A finding survives only when you can show concrete evidence: a location, a reachable path or missing contract, and the behavioral consequence. Trace the change through the code, not just the diff:
 
-```
-~100 lines changed   → Good. Reviewable in one sitting.
-~300 lines changed   → Acceptable if it's a single logical change.
-~1000 lines changed  → Too large. Split it.
-```
+- external input → parser → domain/application type;
+- domain invariant → constructor/transition → persistence;
+- function result → caller handling → protocol response / error / sink;
+- secret source → log, telemetry, snapshot, serialization sink;
+- async work → cancellation, promise ownership, concurrency, retry/idempotency;
+- interface → adapter → external dependency;
+- test → public interface / real seam → observable behavior.
 
-**What counts as "one change":** A single self-contained modification that addresses one thing, includes related tests, and keeps the system functional after submission. One part of a feature — not the whole feature.
+Look especially for things agents commonly miss:
 
-**Splitting strategies when a change is too large:**
+- validated-but-not-parsed data; `JSON.parse(...) as T`, `Response.json() as T`, row casts;
+- expected failures hidden in throws/rejections; broad error unions where callers need semantic cases;
+- secrets in messages, telemetry fields, snapshots, or arbitrary serialization;
+- pass-through wrappers, dependency bags, hidden globals, raw platform bindings outside seams;
+- dropped `AbortSignal`, floating promises, accidental sequential awaits;
+- retryable mutations without idempotency or durable side-effect delivery;
+- tests using module mocks/spies or implementation details;
+- casts, `any`, non-null assertions, mutable exported contracts.
 
-| Strategy | How | When |
-|----------|-----|------|
-| **Stack** | Submit a small change, start the next one based on it | Sequential dependencies |
-| **By file group** | Separate changes for groups needing different reviewers | Cross-cutting concerns |
-| **Horizontal** | Create shared code/stubs first, then consumers | Layered architecture |
-| **Vertical** | Break into smaller full-stack slices of the feature | Feature work |
+No praise, no "what's good" section.
 
-**When large changes are acceptable:** Complete file deletions and automated refactoring where the reviewer only needs to verify intent, not every line.
+## 5. Baseline code smells
 
-**Separate refactoring from feature work.** A change that refactors existing code and adds new behavior is two changes — submit them separately. Small cleanups (variable renaming) can be included at reviewer discretion.
+The Standards axis always carries this fixed set — a given one is flagged only when it is present in the changed code, and a documented repo standard overrides it.
 
-## Change Descriptions
+- **Mysterious Name** — name doesn't reveal what the symbol does or holds → rename; if no honest name comes, the design is murky.
+- **Duplicated Code** — same logic shape in more than one hunk/file → extract the shared shape.
+- **Feature Envy** — a method reaches into another object's data more than its own → move the method onto the data it envies.
+- **Data Clumps** — the same few fields/params keep travelling together (a type wanting to be born) → bundle into one type.
+- **Primitive Obsession** — a primitive standing in for a domain concept → give the concept its own small type.
+- **Repeated Switches** — the same switch/if-cascade on the same type recurs → replace with polymorphism or one shared map.
+- **Shotgun Surgery** — one logical change forces scattered edits across many files → gather into one module.
+- **Divergent Change** — one module is edited for several unrelated reasons → split by reason.
+- **Speculative Generality** — abstraction/parameters/hooks added for a need the spec doesn't have → delete; inline until a real need shows.
+- **Message Chains** — long `a.b().c()` navigation the caller shouldn't depend on → hide behind one method.
+- **Middle Man** — a class/function that mostly just delegates → cut it, call the real target.
+- **Refused Bequest** — a subclass/implementer that ignores or overrides most of its inheritance → use composition.
 
-Every change needs a description that stands alone in version control history.
+## 6. Self-challenge findings
 
-**First line:** Short, imperative, standalone. "Delete the FizzBuzz RPC" not "Deleting the FizzBuzz RPC." Must be informative enough that someone searching history can understand the change without reading the diff.
+Before final output, try to disprove each finding:
 
-**Body:** What is changing and why. Include context, decisions, and reasoning not visible in the code itself. Link to bug numbers, benchmark results, or design docs where relevant. Acknowledge approach shortcomings when they exist.
+- Does a local convention, helper, adapter, or test setup outside the diff already satisfy the standard?
+- Is this a preference with no behavioral consequence?
+- Is the value actually sensitive, or safely redacted before the sink?
+- Is the async work intentionally sequential or bounded by the contract?
+- Is the runtime/platform behavior already covered by representative tests?
 
-**Anti-patterns:** "Fix bug," "Fix build," "Add patch," "Moving code from A to B," "Phase 1," "Add convenience functions."
+Drop or downgrade findings that do not survive.
 
-## Review Process
+## Severity labels
 
-### Step 1: Understand the Context
+- **Blocker** — likely correctness, safety, security, data-loss, runtime, idempotency, boundary, observability, or test-seam issue in changed code; or a changed path violates a documented standard non-negotiable.
+- **Should Fix** — a real design, contract, maintainability, diagnosability, or correctness gap that should be addressed before merge, but is not a blocker.
+- **Simplification** — a clearer/deeper/smaller design that removes unnecessary complexity without changing behavior.
+- **Nit** — small local issue, low behavioral risk, usually documentation/naming/mechanical cleanup.
+- **Question** — genuine ambiguity where the right call depends on product/domain intent not in evidence.
 
-Before looking at code, understand the intent:
+## Output format
 
-```
-- What is this change trying to accomplish?
-- What spec or task does it implement?
-- What is the expected behavior change?
-```
+Start with:
 
-### Step 2: Review the Tests First
-
-Tests reveal intent and coverage:
-
-```
-- Do tests exist for the change?
-- Do they test behavior (not implementation details)?
-- Are edge cases covered?
-- Do tests have descriptive names?
-- Would the tests catch a regression if the code changed?
+```md
+Review target: <target>
+Standards loaded: <sources>
+Spec: <present (where) / absent>
 ```
 
-### Step 3: Review the Implementation
+If there are no findings, say so briefly and list the standards areas and smells checked. No praise.
 
-Walk through the code with the five axes in mind:
+For each finding:
 
-```
-For each file changed:
-1. Correctness: Does this code do what the test says it should?
-2. Readability: Can I understand this without help?
-3. Architecture: Does this fit the system?
-4. Security: Any vulnerabilities?
-5. Performance: Any bottlenecks?
-```
+```md
+### <Severity>: <short title>
 
-### Step 4: Categorize Findings
-
-Label every comment with its severity so the author knows what's required vs optional:
-
-| Prefix | Meaning | Author Action |
-|--------|---------|---------------|
-| *(no prefix)* | Required change | Must address before merge |
-| **Critical:** | Blocks merge | Security vulnerability, data loss, broken functionality |
-| **Nit:** | Minor, optional | Author may ignore — formatting, style preferences |
-| **Optional:** / **Consider:** | Suggestion | Worth considering but not required |
-| **FYI** | Informational only | No action needed — context for future reference |
-
-This prevents authors from treating all feedback as mandatory and wasting time on optional suggestions.
-
-### Step 5: Verify the Verification
-
-Check the author's verification story:
-
-```
-- What tests were run?
-- Did the build pass?
-- Was the change tested manually?
-- Are there screenshots for UI changes?
-- Is there a before/after comparison?
+- **Where:** `file:line` or precise symbol/path
+- **Standard / Spec / Smell:** <source + rule, or quoted spec/smell>
+- **Proof:** <concrete code path, value flow, reachable state, or missing evidence>
+- **Why it matters:** <behavioral consequence>
+- **Fix direction:** <specific correction shape, not a full patch unless asked>
 ```
 
-## Multi-Model Review Pattern
+Group by severity in this order: Blocker, Should Fix, Simplification, Nit, Question. Finish with a one-line summary: count of findings per axis and the worst single item within each axis (do not pick one global worst — that is the reranking the separation avoids).
 
-Use different models for different review perspectives:
+## Principles
 
-```
-Model A writes the code
-    │
-    ▼
-Model B reviews for correctness and architecture
-    │
-    ▼
-Model A addresses the feedback
-    │
-    ▼
-Human makes the final call
-```
+- **Evidence over vibes.** A finding without concrete proof is a **Question** or nothing.
+- **Respect existing conventions.** Do not flag rules the repo is already deliberately following; but a local convention does not excuse a correctness/safety/boundary/observability/test-integrity drift.
+- **Fewer, stronger findings** over wall-of-commentary.
+- **Correctness over completeness.** Focus on what a developer would copy — review illustrative examples as if a reader might paste them into a real codebase.
+- **No sycophancy.** Push back on approaches with clear problems; do not water down a real bug into "a minor concern".
 
-This catches issues that a single model might miss — different models have different blind spots.
+## Boundaries
 
-**Example prompt for a review agent:**
-```
-Review this code change for correctness, security, and adherence to
-our project conventions. The spec says [X]. The change should [Y].
-Flag any issues as Critical, Important, or Suggestion.
-```
-
-## Dead Code Hygiene
-
-After any refactoring or implementation change, check for orphaned code:
-
-1. Identify code that is now unreachable or unused
-2. List it explicitly
-3. **Ask before deleting:** "Should I remove these now-unused elements: [list]?"
-
-Don't leave dead code lying around — it confuses future readers and agents. But don't silently delete things you're not sure about. When in doubt, ask.
-
-```
-DEAD CODE IDENTIFIED:
-- formatLegacyDate() in src/utils/date.ts — replaced by formatDate()
-- OldTaskCard component in src/components/ — replaced by TaskCard
-- LEGACY_API_URL constant in src/config.ts — no remaining references
-→ Safe to remove these?
-```
-
-## Review Speed
-
-Slow reviews block entire teams. The cost of context-switching to review is less than the waiting cost imposed on others.
-
-- **Respond within one business day** — this is the maximum, not the target
-- **Ideal cadence:** Respond shortly after a review request arrives, unless deep in focused coding. A typical change should complete multiple review rounds in a single day
-- **Prioritize fast individual responses** over quick final approval. Quick feedback reduces frustration even if multiple rounds are needed
-- **Large changes:** Ask the author to split them rather than reviewing one massive changeset
-
-## Handling Disagreements
-
-When resolving review disputes, apply this hierarchy:
-
-1. **Technical facts and data** override opinions and preferences
-2. **Style guides** are the absolute authority on style matters
-3. **Software design** must be evaluated on engineering principles, not personal preference
-4. **Codebase consistency** is acceptable if it doesn't degrade overall health
-
-**Don't accept "I'll clean it up later."** Experience shows deferred cleanup rarely happens. Require cleanup before submission unless it's a genuine emergency. If surrounding issues can't be addressed in this change, require filing a bug with self-assignment.
-
-## Honesty in Review
-
-When reviewing code — whether written by you, another agent, or a human:
-
-- **Don't rubber-stamp.** "LGTM" without evidence of review helps no one.
-- **Don't soften real issues.** "This might be a minor concern" when it's a bug that will hit production is dishonest.
-- **Quantify problems when possible.** "This N+1 query will add ~50ms per item in the list" is better than "this could be slow."
-- **Push back on approaches with clear problems.** Sycophancy is a failure mode in reviews. If the implementation has issues, say so directly and propose alternatives.
-- **Accept override gracefully.** If the author has full context and disagrees, defer to their judgment. Comment on code, not people — reframe personal critiques to focus on the code itself.
-
-## Dependency Discipline
-
-Part of code review is dependency review:
-
-**Before adding any dependency:**
-1. Does the existing stack solve this? (Often it does.)
-2. How large is the dependency? (Check bundle impact.)
-3. Is it actively maintained? (Check last commit, open issues.)
-4. Does it have known vulnerabilities? (`npm audit`)
-5. What's the license? (Must be compatible with the project.)
-
-**Rule:** Prefer standard library and existing utilities over new dependencies. Every dependency is a liability.
-
-## The Review Checklist
-
-```markdown
-## Review: [PR/Change title]
-
-### Context
-- [ ] I understand what this change does and why
-
-### Correctness
-- [ ] Change matches spec/task requirements
-- [ ] Edge cases handled
-- [ ] Error paths handled
-- [ ] Tests cover the change adequately
-
-### Readability
-- [ ] Names are clear and consistent
-- [ ] Logic is straightforward
-- [ ] No unnecessary complexity
-
-### Architecture
-- [ ] Follows existing patterns
-- [ ] No unnecessary coupling or dependencies
-- [ ] Appropriate abstraction level
-
-### Security
-- [ ] No secrets in code
-- [ ] Input validated at boundaries
-- [ ] No injection vulnerabilities
-- [ ] Auth checks in place
-- [ ] External data sources treated as untrusted
-
-### Performance
-- [ ] No N+1 patterns
-- [ ] No unbounded operations
-- [ ] Pagination on list endpoints
-
-### Verification
-- [ ] Tests pass
-- [ ] Build succeeds
-- [ ] Manual verification done (if applicable)
-
-### Verdict
-- [ ] **Approve** — Ready to merge
-- [ ] **Request changes** — Issues must be addressed
-```
-## See Also
-
-- For detailed security review guidance, see `references/security-checklist.md`
-- For performance review checks, see `references/performance-checklist.md`
-
-## Common Rationalizations
-
-| Rationalization | Reality |
-|---|---|
-| "It works, that's good enough" | Working code that's unreadable, insecure, or architecturally wrong creates debt that compounds. |
-| "I wrote it, so I know it's correct" | Authors are blind to their own assumptions. Every change benefits from another set of eyes. |
-| "We'll clean it up later" | Later never comes. The review is the quality gate — use it. Require cleanup before merge, not after. |
-| "AI-generated code is probably fine" | AI code needs more scrutiny, not less. It's confident and plausible, even when wrong. |
-| "The tests pass, so it's good" | Tests are necessary but not sufficient. They don't catch architecture problems, security issues, or readability concerns. |
-
-## Red Flags
-
-- PRs merged without any review
-- Review that only checks if tests pass (ignoring other axes)
-- "LGTM" without evidence of actual review
-- Security-sensitive changes without security-focused review
-- Large PRs that are "too big to review properly" (split them)
-- No regression tests with bug fix PRs
-- Review comments without severity labels — makes it unclear what's required vs optional
-- Accepting "I'll fix it later" — it never happens
-
-## Verification
-
-After review is complete:
-
-- [ ] All Critical issues are resolved
-- [ ] All Important issues are resolved or explicitly deferred with justification
-- [ ] Tests pass
-- [ ] Build succeeds
-- [ ] The verification story is documented (what changed, how it was verified)
+- Skip anything tooling enforces.
+- Do not claim "fails at runtime" without naming the concrete serialization/async value or state path.
+- Pre-existing issues in unchanged code: only if they block merging this change.
+- This skill never writes to the repository.
+- Keep the review scoped and complete the task with rarely any open threads.

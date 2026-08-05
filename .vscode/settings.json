@@ -105,7 +105,8 @@
     },
   },
   "editor.tokenColorCustomizations": {},
-  "workbench.colorTheme": "Light 2026",
+  "workbench.colorTheme": "Nord Light",
   "antigravityCopilot.server.executablePath": "C:\\Users\\kacpe\\CLIProxyAPI\\cli-proxy-api.exe",
-  "antigravityCopilot.server.enabled": true,
+  "antigravityCopilot.server.enabled": false,
+  "chat.viewSessions.orientation": "stacked",
 }

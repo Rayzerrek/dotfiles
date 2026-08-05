@@ -5,6 +5,26 @@
         "apiType": "chat-completions",
         "models": [
             {
+                "id": "gemini-3.5-flash-low",
+                "name": "Antigravity: Gemini 3.5 Flash Low",
+                "url": "http://127.0.0.1:8420/v1",
+                "toolCalling": true,
+                "vision": true,
+                "thinking": false,
+                "maxInputTokens": 128000,
+                "maxOutputTokens": 16000
+            },
+            {
+                "id": "gemini-3.5-flash-extra-low",
+                "name": "Antigravity: Gemini 3.5 Flash Extra Low",
+                "url": "http://127.0.0.1:8420/v1",
+                "toolCalling": true,
+                "vision": true,
+                "thinking": false,
+                "maxInputTokens": 128000,
+                "maxOutputTokens": 16000
+            },
+            {
                 "id": "claude-opus-4-6-thinking",
                 "name": "Antigravity: Claude Opus 4 6 Thinking",
                 "url": "http://127.0.0.1:8420/v1",
@@ -17,6 +37,16 @@
             {
                 "id": "claude-sonnet-4-6",
                 "name": "Antigravity: Claude Sonnet 4 6",
+                "url": "http://127.0.0.1:8420/v1",
+                "toolCalling": true,
+                "vision": true,
+                "thinking": false,
+                "maxInputTokens": 128000,
+                "maxOutputTokens": 16000
+            },
+            {
+                "id": "gpt-oss-120b-medium",
+                "name": "Antigravity: Gpt Oss 120b Medium",
                 "url": "http://127.0.0.1:8420/v1",
                 "toolCalling": true,
                 "vision": true,
@@ -57,46 +87,6 @@
             {
                 "id": "gemini-3.1-pro-low",
                 "name": "Antigravity: Gemini 3.1 Pro Low",
-                "url": "http://127.0.0.1:8420/v1",
-                "toolCalling": true,
-                "vision": true,
-                "thinking": false,
-                "maxInputTokens": 128000,
-                "maxOutputTokens": 16000
-            },
-            {
-                "id": "gpt-oss-120b-medium",
-                "name": "Antigravity: Gpt Oss 120b Medium",
-                "url": "http://127.0.0.1:8420/v1",
-                "toolCalling": true,
-                "vision": true,
-                "thinking": false,
-                "maxInputTokens": 128000,
-                "maxOutputTokens": 16000
-            },
-            {
-                "id": "gemini-3.5-flash-lite",
-                "name": "Antigravity: Gemini 3.5 Flash Lite",
-                "url": "http://127.0.0.1:8420/v1",
-                "toolCalling": true,
-                "vision": true,
-                "thinking": false,
-                "maxInputTokens": 128000,
-                "maxOutputTokens": 16000
-            },
-            {
-                "id": "gemini-3.5-flash-low",
-                "name": "Antigravity: Gemini 3.5 Flash Low",
-                "url": "http://127.0.0.1:8420/v1",
-                "toolCalling": true,
-                "vision": true,
-                "thinking": false,
-                "maxInputTokens": 128000,
-                "maxOutputTokens": 16000
-            },
-            {
-                "id": "gemini-3.5-flash-extra-low",
-                "name": "Antigravity: Gemini 3.5 Flash Extra Low",
                 "url": "http://127.0.0.1:8420/v1",
                 "toolCalling": true,
                 "vision": true,
