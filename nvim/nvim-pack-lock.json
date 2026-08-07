@@ -20,6 +20,10 @@
       "rev": "1cd8d31da4c1536be11c4dae0ed61d066e05e87f",
       "src": "https://github.com/dmtrKovalenko/fff.nvim"
     },
+    "gruvbox.nvim": {
+      "rev": "154eb5ff5b96d0641307113fa385eaf0d36d9796",
+      "src": "https://github.com/ellisonleao/gruvbox.nvim"
+    },
     "lualine.nvim": {
       "rev": "131a558e13f9f28b15cd235557150ccb23f89286",
       "src": "https://github.com/nvim-lualine/lualine.nvim"

@@ -2,9 +2,8 @@
   "defaultModel": "deepseek-v4-flash-free",
   "defaultProvider": "opencode",
   "defaultThinkingLevel": "high",
-  "lastChangelogVersion": "0.83.0",
+  "lastChangelogVersion": "0.84.0",
   "packages": [
-    "npm:pi-web-access",
     {
       "source": "npm:@plannotator/pi-extension",
       "skills": []
