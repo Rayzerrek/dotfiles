@@ -105,8 +105,10 @@
     },
   },
   "editor.tokenColorCustomizations": {},
-  "workbench.colorTheme": "Nord Light",
+  "workbench.colorTheme": "Gruvbox Light Hard",
   "antigravityCopilot.server.executablePath": "C:\\Users\\kacpe\\CLIProxyAPI\\cli-proxy-api.exe",
   "antigravityCopilot.server.enabled": false,
   "chat.viewSessions.orientation": "stacked",
+  "editor.fontSize": 13,
+  "editor.formatOnPaste": true,
 }
