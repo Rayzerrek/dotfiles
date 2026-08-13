@@ -32,10 +32,7 @@
       "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
     },
     "Command Prompt": {
-      "path": [
-        "${env:windir}\\Sysnative\\cmd.exe",
-        "${env:windir}\\System32\\cmd.exe",
-      ],
+      "path": ["${env:windir}\\Sysnative\\cmd.exe", "${env:windir}\\System32\\cmd.exe"],
       "args": [],
       "icon": "terminal-cmd",
     },
@@ -105,10 +102,10 @@
     },
   },
   "editor.tokenColorCustomizations": {},
-  "workbench.colorTheme": "Gruvbox Light Hard",
   "antigravityCopilot.server.executablePath": "C:\\Users\\kacpe\\CLIProxyAPI\\cli-proxy-api.exe",
   "antigravityCopilot.server.enabled": false,
   "chat.viewSessions.orientation": "stacked",
   "editor.fontSize": 13,
   "editor.formatOnPaste": true,
+  "workbench.colorTheme": "Nord Light",
 }

@@ -105,7 +105,7 @@ vim.pack.add({
 }, { confirm = false })
 
 require('vesper').setup({
-  transparent = false,
+  transparent = true,
 })
 
 vim.cmd.colorscheme('vesper')
@@ -331,10 +331,64 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+
+local biome_filetypes = {
+  'javascript',
+  'javascriptreact',
+  'typescript', 
+  'typescriptreact',
+  'json',
+  'jsonc',
+  'css',
+  'svelte',
+  'astro',
+  'vue'
+}
+
 vim.lsp.config('biome', {
   cmd = { 'biome', 'lsp-proxy' },
-  filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'json', 'jsonc', 'css', 'svelte', 'astro', 'vue' },
+  filetypes = biome_filetypes,
   root_markers = { 'biome.json', 'biome.jsonc' },
+})
+
+local oxlint_markers = { '.oxlintrc.json', '.oxlintrc.jsonc', 'oxlint.config.ts' }
+
+vim.lsp.config('oxlint', {
+  cmd = { 'oxlint', '--lsp' },
+  filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'astro' },
+  root_dir = function(bufnr, on_dir)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local home = vim.fs.normalize(vim.uv.os_homedir())
+    local marker = vim.fs.find(oxlint_markers, {
+      path = fname,
+      upward = true,
+      stop = home,
+    })[1]
+    if marker and vim.fs.normalize(vim.fs.dirname(marker)) == home then
+      -- config domowy nie moze byc rootem projektu (vite-plus skanowalby cale ~)
+      marker = nil
+    end
+    on_dir(marker and vim.fs.dirname(marker) or vim.fs.dirname(fname))
+  end,
+  before_init = function(init_params, config)
+    -- oxlint LSP nie wykrywa configu sam; podajemy configPath jawnie.
+    -- Root nigdy nie jest katalogiem domowym (vite-plus skanowalby wtedy cale ~)
+    local marker = vim.fs.find(oxlint_markers, {
+      path = config.root_dir or '',
+      upward = true,
+      stop = vim.uv.os_homedir(),
+    })[1]
+    if not marker then
+      marker = vim.fs.joinpath(vim.uv.os_homedir(), '.oxlintrc.json')
+      if vim.fn.filereadable(marker) ~= 1 then
+        return
+      end
+    end
+    init_params.initializationOptions = init_params.initializationOptions or {}
+    local settings = init_params.initializationOptions.settings or {}
+    init_params.initializationOptions.settings =
+      vim.tbl_extend('force', settings, { configPath = vim.fs.normalize(marker) })
+  end,
 })
 
 vim.lsp.config('svelte', {
@@ -362,7 +416,7 @@ local function enable_lsp_if_executable(name)
   end
 end
 
-for _, server in ipairs({ 'biome', 'clangd', 'pyright', 'ruff', 'marksman', 'svelte', 'zls' }) do
+for _, server in ipairs({ 'oxlint', 'biome', 'clangd', 'pyright', 'ruff', 'marksman', 'svelte', 'zls' }) do
   enable_lsp_if_executable(server)
 end
 
@@ -384,6 +438,10 @@ end, { desc = 'Toggle search highlight' })
 
 vim.keymap.set('n', '<leader>co', vim.cmd.copen, { desc = 'Open quickfix' })
 vim.keymap.set('n', '<leader>cl', vim.cmd.cclose, { desc = 'Close quickfix' })
+
+vim.keymap.set('n', '<leader>d', function()
+  vim.diagnostic.setloclist({ open = true })
+end, { desc = 'Show all diagnostics' })
 
 vim.keymap.set('n', '<leader>tw', function()
   local view = vim.fn.winsaveview()
