@@ -1,0 +1,14 @@
+# Ultra-fast minimal Starship configuration
+format = "$directory$git_branch$line_break$character"
+
+scan_timeout = 10
+command_timeout = 100
+
+[directory]
+truncation_length = 3
+truncate_to_repo = false
+
+[git_branch]
+symbol = ""
+truncation_length = 18
+format = "[$symbol$branch]($style) "

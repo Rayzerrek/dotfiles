@@ -1,9 +1,10 @@
 {
-  "lastChangelogVersion": "0.84.1",
+  "lastChangelogVersion": "0.84.2",
   "theme": "dark",
   "packages": [
     "git:github.com/dmmulroy/pi-web-tools",
-    "git:github.com/dmmulroy/pi-mcp"
+    "git:github.com/dmmulroy/pi-mcp",
+    "npm:pi-commandcode-provider"
   ],
   "enabledModels": [
     "opencode-go/glm-5.2",
@@ -25,7 +26,7 @@
     "opencode/deepseek-v4-flash-free"
   ],
   "enableInstallTelemetry": false,
-  "defaultProvider": "opencode",
-  "defaultModel": "deepseek-v4-flash-free",
+  "defaultProvider": "commandcode",
+  "defaultModel": "zai-org/GLM-5.3",
   "defaultThinkingLevel": "max"
 }

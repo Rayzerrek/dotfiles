@@ -107,5 +107,5 @@
   "chat.viewSessions.orientation": "stacked",
   "editor.fontSize": 13,
   "editor.formatOnPaste": true,
-  "workbench.colorTheme": "Nord Light",
+  "workbench.colorTheme": "Gruvbox Light Hard",
 }
