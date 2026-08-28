@@ -26,7 +26,7 @@
     "opencode/deepseek-v4-flash-free"
   ],
   "enableInstallTelemetry": false,
-  "defaultProvider": "commandcode",
-  "defaultModel": "zai-org/GLM-5.3",
-  "defaultThinkingLevel": "max"
+  "defaultProvider": "openrouter",
+  "defaultModel": "stealth/ox-alpha",
+  "defaultThinkingLevel": "high"
 }

@@ -5,10 +5,15 @@ scan_timeout = 10
 command_timeout = 100
 
 [directory]
+style = "bold blue"
 truncation_length = 3
 truncate_to_repo = false
 
 [git_branch]
+style = "bold gray"
 symbol = ""
 truncation_length = 18
 format = "[$symbol$branch]($style) "
+
+[character]
+success_symbol = "[❯](bold purple)"
