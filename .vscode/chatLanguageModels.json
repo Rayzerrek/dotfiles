@@ -1,1 +1,25 @@
-[]
+[
+	{
+		"name": "Copilot",
+		"vendor": "agent-host-copilotcli",
+		"settings": {
+			"auto": {
+				"tier": "intelligence"
+			}
+		}
+	},
+	{
+		"name": "Copilot",
+		"vendor": "copilot",
+		"settings": {
+			"auto": {
+				"tier": "intelligence"
+			}
+		}
+	},
+	{
+		"name": "NVIDIA NIM",
+		"vendor": "nvidia-nim",
+		"apiKey": "${input:chat.lm.secret.52a171e0}"
+	}
+]

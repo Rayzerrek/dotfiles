@@ -1,56 +1,88 @@
 {
-  "terminal.integrated.fontFamily": "Cascadia Code NF",
-  "editor.fontFamily": "FiraCode Nerd Font",
-  "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "file",
-  "[typescript][jsonc][json][typescriptreact][javascriptreact]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.oxc": "always",
-    },
-  },
-  "js/ts.updateImportsOnFileMove.enabled": "always",
-  "remote.autoForwardPortsSource": "hybrid",
-  "json.schemaDownload.trustedDomains": {
-    "https://developer.microsoft.com/json-schemas/": true,
-    "https://json-schema.org/": true,
-    "https://json.schemastore.org/": true,
-    "https://raw.githubusercontent.com/devcontainers/spec/": true,
-    "https://raw.githubusercontent.com/microsoft/vscode/": true,
-    "https://schemastore.azurewebsites.net/": true,
-    "https://ui.shadcn.com": true,
-    "https://www.schemastore.org/": true,
-  },
-  "terminal.integrated.commandsToSkipShell": [
-    "kilo-code.new.agentManagerOpen",
-    "kilo-code.new.agentManager.showTerminal",
-  ],
-  "terminal.integrated.profiles.windows": {
-    "PowerShell": {
-      "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
-    },
-    "Command Prompt": {
-      "path": [
-        "${env:windir}\\Sysnative\\cmd.exe",
-        "${env:windir}\\System32\\cmd.exe",
-      ],
-      "args": [],
-      "icon": "terminal-cmd",
-    },
-    "Git Bash": {
-      "source": "Git Bash",
-      "icon": "terminal-git-bash",
-    },
-    "Nushell": {
-      "path": "C:\\Users\\kacpe\\scoop\\apps\\nu\\current\\nu.exe",
-      "args": [],
-    },
-  },
-  "terminal.integrated.defaultProfile.windows": "Nushell",
-  "workbench.iconTheme": "symbols",
-  "github.copilot.enable": {
-    "typescript": true,
-  },
-  "github.copilot.nextEditSuggestions.enabled": true,
-  "workbench.colorTheme": "Light 2026",
+	"terminal.integrated.fontFamily": "FiraCode Nerd Font",
+	"editor.fontFamily": "FiraCode Nerd Font",
+	"editor.formatOnSaveMode": "file",
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.codeActionsOnSave": {
+		"source.fixAll.biome": "always",
+		"source.organizeImports.biome": "explicit"
+	},
+	"editor.formatOnPaste": true,
+	"emmet.showExpandedAbbreviation": "never",
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[graphql]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"js/ts.updateImportsOnFileMove.enabled": "always",
+	"remote.autoForwardPortsSource": "hybrid",
+	"json.schemaDownload.trustedDomains": {
+		"https://schemastore.azurewebsites.net/": true,
+		"https://raw.githubusercontent.com/microsoft/vscode/": true,
+		"https://raw.githubusercontent.com/devcontainers/spec/": true,
+		"https://www.schemastore.org/": true,
+		"https://json.schemastore.org/": true,
+		"https://json-schema.org/": true,
+		"https://developer.microsoft.com/json-schemas/": true,
+		"https://ui.shadcn.com": true,
+		"https://biomejs.dev": true
+	},
+	"terminal.integrated.profiles.windows": {
+		"PowerShell": {
+			"path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+		},
+		"Command Prompt": {
+			"path": [
+				"${env:windir}\\Sysnative\\cmd.exe",
+				"${env:windir}\\System32\\cmd.exe"
+			],
+			"args": [],
+			"icon": "terminal-cmd"
+		},
+		"Git Bash": {
+			"source": "Git Bash",
+			"icon": "terminal-git-bash"
+		},
+		"Nushell": {
+			"path": "C:\\Users\\kacpe\\scoop\\apps\\nu\\current\\nu.exe",
+			"args": []
+		}
+	},
+	"terminal.integrated.defaultProfile.windows": "Nushell",
+	"workbench.iconTheme": "symbols",
+	"github.copilot.enable": {
+		"typescript": true
+	},
+	"github.copilot.nextEditSuggestions.enabled": true,
+	"editor.formatOnSave": true,
+	"workbench.activityBar.location": "top",
+	"editor.cursorSmoothCaretAnimation": "on",
+	"workbench.experimental.modernUI": false,
+	"workbench.colorTheme": "Aster",
+	"terminal.integrated.commandsToSkipShell": [
+		"kilo-code.new.agentManagerOpen",
+		"kilo-code.new.agentManager.showTerminal",
+		"kilo-code.new.agentManager.previousTerminal",
+		"kilo-code.new.agentManager.nextTerminal"
+	],
+	"kilo-code.new.agentWorkStyle": "skipped"
 }

@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.84.2",
+  "lastChangelogVersion": "0.85.1",
   "theme": "dark",
   "packages": [
     "git:github.com/dmmulroy/pi-web-tools",
@@ -26,7 +26,10 @@
     "opencode/deepseek-v4-flash-free"
   ],
   "enableInstallTelemetry": false,
-  "defaultProvider": "openrouter",
-  "defaultModel": "stealth/ox-alpha",
-  "defaultThinkingLevel": "high"
+  "defaultProvider": "opencode",
+  "defaultModel": "nemotron-3-ultra-free",
+  "defaultThinkingLevel": "high",
+  "modelThinkingLevels": {
+    "nvidia/moonshotai/kimi-k3": "high"
+  }
 }
