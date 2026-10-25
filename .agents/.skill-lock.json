@@ -6,163 +6,37 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/anthropics/skills.git",
       "skillPath": "skills/frontend-design/SKILL.md",
-      "skillFolderHash": "928950704df8a8b885c03de5da626331e6f29cf8",
+      "skillFolderHash": "d79e2a5bb4df4a386c2adcdd9ab8709bba28c3f6",
       "pluginName": "example-skills",
-      "installedAt": "2026-03-15T13:57:28.676Z",
-      "updatedAt": "2026-03-15T13:57:28.676Z"
+      "installedAt": "2026-10-11T16:15:45.861Z",
+      "updatedAt": "2026-10-11T16:15:45.861Z"
     },
     "find-skills": {
       "source": "vercel-labs/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/vercel-labs/skills.git",
       "skillPath": "skills/find-skills/SKILL.md",
-      "skillFolderHash": "3013fdeb8a11b10b1eb795ec3ae8bfca38f7c26d",
-      "installedAt": "2026-03-15T13:57:37.758Z",
-      "updatedAt": "2026-03-15T13:57:37.758Z"
+      "skillFolderHash": "76a98a285cb0434f3d39e1a873823556330e398b",
+      "installedAt": "2026-10-11T16:15:51.646Z",
+      "updatedAt": "2026-10-11T16:15:51.646Z"
     },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
       "skillPath": "skills/react-best-practices/SKILL.md",
-      "skillFolderHash": "18a9a6d17d5958d4ab10405883b80960644dbd5b",
-      "installedAt": "2026-03-15T14:10:26.107Z",
-      "updatedAt": "2026-03-15T14:10:26.107Z"
+      "skillFolderHash": "343db72180d05814949fef7d46be96b5c6ee86b3",
+      "installedAt": "2026-10-20T21:15:02.989Z",
+      "updatedAt": "2026-10-20T21:15:02.989Z"
     },
-    "code-review": {
-      "source": "cloudflare/cloudflare-docs",
+    "emil-design-eng": {
+      "source": "emilkowalski/skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/cloudflare/cloudflare-docs.git",
-      "skillPath": ".agents/skills/code-review/SKILL.md",
-      "skillFolderHash": "0aa4097a33b2d48dbc1a8097329c70c5a7c2e50e",
-      "installedAt": "2026-04-24T18:43:27.830Z",
-      "updatedAt": "2026-04-24T18:45:34.505Z"
-    },
-    "pyqt6-ui-development-rules": {
-      "source": "oimiragieo/agent-studio",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/oimiragieo/agent-studio.git",
-      "skillPath": ".claude/skills/pyqt6-ui-development-rules/SKILL.md",
-      "skillFolderHash": "73ecae5229b980f9b2b29a931013c29aef19ead4",
-      "installedAt": "2026-05-16T13:03:46.089Z",
-      "updatedAt": "2026-05-16T13:03:46.089Z"
-    },
-    "design-taste-frontend": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/Leonxlnx/taste-skill.git",
-      "skillPath": "skills/taste-skill/SKILL.md",
-      "skillFolderHash": "a6d128e53b4ec0238baee751dde33bf707adb5ec",
-      "installedAt": "2026-05-29T14:59:04.095Z",
-      "updatedAt": "2026-05-29T14:59:04.095Z"
-    },
-    "brandkit": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/Leonxlnx/taste-skill.git",
-      "skillPath": "skills/brandkit/SKILL.md",
-      "skillFolderHash": "d278ff748cafab01e4ae5dd7758fc0b53258621c",
-      "installedAt": "2026-05-29T14:59:04.099Z",
-      "updatedAt": "2026-05-29T14:59:04.099Z"
-    },
-    "minimalist-ui": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/Leonxlnx/taste-skill.git",
-      "skillPath": "skills/minimalist-skill/SKILL.md",
-      "skillFolderHash": "5509c012862cda27e2ed7efae89ed940ecc53add",
-      "installedAt": "2026-05-29T14:59:04.100Z",
-      "updatedAt": "2026-05-29T14:59:04.100Z"
-    },
-    "redesign-existing-projects": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/Leonxlnx/taste-skill.git",
-      "skillPath": "skills/redesign-skill/SKILL.md",
-      "skillFolderHash": "d9cffe56d26d4af7687299e391a7be1cfaf46c1b",
-      "installedAt": "2026-05-29T14:59:04.102Z",
-      "updatedAt": "2026-05-29T14:59:04.102Z"
-    },
-    "imagegen-frontend-web": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/Leonxlnx/taste-skill.git",
-      "skillPath": "skills/imagegen-frontend-web/SKILL.md",
-      "skillFolderHash": "3b5117d349200e33f9c3399344681620079dcc18",
-      "installedAt": "2026-05-29T14:59:04.105Z",
-      "updatedAt": "2026-05-29T14:59:04.105Z"
-    },
-    "gpt-taste": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/Leonxlnx/taste-skill.git",
-      "skillPath": "skills/gpt-tasteskill/SKILL.md",
-      "skillFolderHash": "c87d529ad945cd35985b19475bf53f41682d4f69",
-      "installedAt": "2026-05-29T14:59:04.107Z",
-      "updatedAt": "2026-05-29T14:59:04.107Z"
-    },
-    "stitch-design-taste": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/Leonxlnx/taste-skill.git",
-      "skillPath": "skills/stitch-skill/SKILL.md",
-      "skillFolderHash": "743fba3540a3593f15d548935f08f74788e76d3d",
-      "installedAt": "2026-05-29T14:59:04.109Z",
-      "updatedAt": "2026-05-29T14:59:04.109Z"
-    },
-    "unity-scriptableobject": {
-      "source": "besty0728/unity-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
-      "skillPath": "SkillsForUnity/unity-skills~/skills/scriptableobject/SKILL.md",
-      "skillFolderHash": "331ca2ebb65d6279520abbbe1297d568fdf79aa0",
-      "installedAt": "2026-06-20T23:31:40.707Z",
-      "updatedAt": "2026-06-20T23:31:40.707Z"
-    },
-    "unity-shader": {
-      "source": "besty0728/unity-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
-      "skillPath": "SkillsForUnity/unity-skills~/skills/shader/SKILL.md",
-      "skillFolderHash": "27e5e273540712aadf500c17384ef9cdd653e67d",
-      "installedAt": "2026-06-20T23:31:41.695Z",
-      "updatedAt": "2026-06-20T23:31:41.695Z"
-    },
-    "unity-ui": {
-      "source": "besty0728/unity-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
-      "skillPath": "SkillsForUnity/unity-skills~/skills/ui/SKILL.md",
-      "skillFolderHash": "4b16cbcfdaaeaadc35219513b7f5a1341f7c8730",
-      "installedAt": "2026-06-20T23:31:45.732Z",
-      "updatedAt": "2026-06-20T23:31:45.732Z"
-    },
-    "unity-skills": {
-      "source": "besty0728/unity-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
-      "skillPath": "SkillsForUnity/unity-skills~/SKILL.md",
-      "skillFolderHash": "72a2192efba2291ef29ed474451ee47b07444a2b",
-      "installedAt": "2026-06-20T23:31:47.131Z",
-      "updatedAt": "2026-06-20T23:31:47.131Z"
-    },
-    "unity-editor": {
-      "source": "besty0728/unity-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
-      "skillPath": "SkillsForUnity/unity-skills~/skills/editor/SKILL.md",
-      "skillFolderHash": "c67ed26c5788d9e583dad3bff4bff412f7ee7b81",
-      "installedAt": "2026-06-20T23:31:50.443Z",
-      "updatedAt": "2026-06-20T23:31:50.443Z"
-    },
-    "unity-uitoolkit": {
-      "source": "besty0728/unity-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/besty0728/unity-skills.git",
-      "skillPath": "SkillsForUnity/unity-skills~/skills/uitoolkit/SKILL.md",
-      "skillFolderHash": "23ae8933f53db502271342662745aea7f414ac99",
-      "installedAt": "2026-06-20T23:31:52.676Z",
-      "updatedAt": "2026-06-20T23:31:52.676Z"
+      "sourceUrl": "https://github.com/emilkowalski/skills.git",
+      "skillPath": "skills/emil-design-eng/SKILL.md",
+      "skillFolderHash": "db7a20dc1d8ad26a0307dcb45ebc79fc372f5c69",
+      "installedAt": "2026-10-20T21:21:50.440Z",
+      "updatedAt": "2026-10-20T21:21:50.440Z"
     }
   },
   "dismissed": {
@@ -170,20 +44,18 @@
   },
   "lastSelectedAgents": [
     "amp",
-    "antigravity",
     "cline",
     "codex",
     "cursor",
-    "deepagents",
-    "dexto",
-    "firebender",
+    "droid",
+    "fx",
     "gemini-cli",
     "github-copilot",
-    "kimi-cli",
+    "kilo",
+    "kimi-code-cli",
     "opencode",
+    "pi",
     "warp",
-    "zed",
-    "kiro-cli",
-    "pi"
+    "zed"
   ]
 }
